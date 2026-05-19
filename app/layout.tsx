@@ -11,7 +11,7 @@ const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500"],
+  weight: ["300", "400", "500", "700"],
 });
 
 const syne = Syne({
@@ -75,7 +75,7 @@ export default function RootLayout({
       lang="en"
       className={`${dmSans.variable} ${syne.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#05070F] text-white">
+      <body className="min-h-full overflow-x-hidden flex flex-col bg-[#05070F] text-white">
         <Script id="gtag-script" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];

@@ -46,11 +46,7 @@ export function AuditForm() {
           {...register("email")}
           className="input h-12 flex-1"
         />
-        <button
-          type="submit"
-          className="h-12 rounded-xl bg-gradient-to-r from-[#00E5FF] to-[#7B61FF] px-6 font-semibold text-[#04111a]"
-          disabled={isSubmitting}
-        >
+        <button type="submit" className="btn-primary h-12 shrink-0 px-6" disabled={isSubmitting}>
           {isSubmitting ? <Loader2 className="mx-auto h-4 w-4 animate-spin" /> : "Book Free Call"}
         </button>
       </form>

@@ -84,7 +84,7 @@ export function ContactForm() {
           <input {...register("phone")} className="input" />
         </Field>
       </div>
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Field label="Country" error={errors.country?.message}>
           <select {...register("country")} className="input">
             <option value="">Select</option>
@@ -120,11 +120,7 @@ export function ContactForm() {
         <textarea {...register("description")} rows={5} className="input resize-none" />
       </Field>
       {serverError ? <p className="text-sm text-red-400">{serverError}</p> : null}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#00E5FF] to-[#7B61FF] px-5 py-3 font-semibold text-[#04111a]"
-      >
+      <button type="submit" disabled={isSubmitting} className="btn-primary w-full">
         {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Send Message"}
       </button>
     </form>
@@ -142,7 +138,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm text-slate-300">{label}</span>
+      <span className="mb-1 block text-sm text-[#8892A4]">{label}</span>
       {children}
       {error ? <span className="mt-1 block text-xs text-red-400">{error}</span> : null}
     </label>

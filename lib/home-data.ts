@@ -45,6 +45,9 @@ export const serviceCards: { title: string; desc: string; roi: string; icon: Ser
   },
 ];
 
+/** Contact form service dropdown — kept in sync with serviceCards titles */
+export const contactServiceOptions = serviceCards.map((card) => card.title);
+
 export const faqItems = [
   {
     question: "What industries do you work with?",
@@ -117,26 +120,28 @@ export const caseStudies = [
   {
     industry: "E-commerce",
     metric: "340%",
-    detail: "Increase in lead response rate within 30 days of launch.",
+    outcome: "Lead response rate",
+    detail: "From hours to minutes within 30 days of go-live.",
   },
   {
     industry: "SaaS",
     metric: "28 hrs",
-    detail: "Saved per employee per week through workflow automation.",
+    outcome: "Saved per employee / week",
+    detail: "Workflow automation removed repetitive ops work.",
   },
   {
     industry: "Real estate",
     metric: "3×",
-    detail: "More booked consultations in the first month after go-live.",
+    outcome: "Booked consultations",
+    detail: "More qualified meetings in the first month after launch.",
   },
 ] as const;
 
-export const resultsMetrics = [
-  ["Time Saved", 85],
-  ["Lead Conversion", 72],
-  ["Revenue Impact", 67],
-  ["Client Satisfaction", 94],
-  ["Cost Reduction", 55],
+export const resultsKpis = [
+  { value: "50+", label: "Automations delivered" },
+  { value: "5 days", label: "Average time to first demo" },
+  { value: "3×", label: "Typical efficiency gain" },
+  { value: "94%", label: "Client satisfaction score" },
 ] as const;
 
 export const techNames = [

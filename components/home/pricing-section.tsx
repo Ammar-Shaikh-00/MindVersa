@@ -12,7 +12,7 @@ function PriceCard({
 }: {
   title: string;
   price: string;
-  points: string[];
+  points: { text: string; included: boolean }[];
   featured?: boolean;
 }) {
   return (
@@ -32,7 +32,12 @@ function PriceCard({
       <p className="mt-3 font-heading text-3xl font-extrabold text-[#00E5FF] sm:text-4xl">{price}</p>
       <ul className="section-body mt-4 space-y-2 text-sm">
         {points.map((point) => (
-          <li key={point}>{point}</li>
+          <li
+            key={point.text}
+            className={cn(!point.included && "text-[#5a6478] line-through decoration-[#5a6478]/60")}
+          >
+            {point.text}
+          </li>
         ))}
       </ul>
       <Link href="#contact" className="btn-primary mt-6 w-full sm:w-auto">
@@ -102,12 +107,12 @@ export function PricingSection({
               title="Starter"
               price={`$${starter}/mo`}
               points={[
-                "1 AI Chatbot",
-                "Basic lead capture automation",
-                "Monthly performance report",
-                "Email support (48hr)",
-                "✗ Custom workflows",
-                "✗ CRM integration",
+                { text: "1 AI Chatbot", included: true },
+                { text: "Basic lead capture automation", included: true },
+                { text: "Monthly performance report", included: true },
+                { text: "Email support (48hr)", included: true },
+                { text: "Custom workflows", included: false },
+                { text: "CRM integration", included: false },
               ]}
             />
             <PriceCard
@@ -115,25 +120,25 @@ export function PricingSection({
               featured
               price={`$${growth}/mo`}
               points={[
-                "3 AI agents",
-                "Lead gen + nurture sequences",
-                "3 custom workflows",
-                "CRM integrations",
-                "Weekly dashboard",
-                "Priority support (4hr)",
-                "30-day results guarantee",
+                { text: "3 AI agents", included: true },
+                { text: "Lead gen + nurture sequences", included: true },
+                { text: "3 custom workflows", included: true },
+                { text: "CRM integrations", included: true },
+                { text: "Weekly dashboard", included: true },
+                { text: "Priority support (4hr)", included: true },
+                { text: "30-day results guarantee", included: true },
               ]}
             />
             <PriceCard
               title="Enterprise"
               price="Custom"
               points={[
-                "Unlimited automations",
-                "Model fine-tuning",
-                "Full-stack integrations",
-                "Dedicated AI engineer",
-                "99.9% uptime SLA",
-                "24/7 support",
+                { text: "Unlimited automations", included: true },
+                { text: "Model fine-tuning", included: true },
+                { text: "Full-stack integrations", included: true },
+                { text: "Dedicated AI engineer", included: true },
+                { text: "99.9% uptime SLA", included: true },
+                { text: "24/7 support", included: true },
               ]}
             />
           </div>

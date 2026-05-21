@@ -6,7 +6,7 @@ import { auditSchema } from "@/lib/validation";
 function getSupabaseClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) throw new Error("Supabase credentials are missing");
+  if (!url || !key) return null;
   return createClient(url, key);
 }
 
@@ -19,6 +19,12 @@ export async function POST(request: Request) {
     }
 
     const supabase = getSupabaseClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: "Form is not configured yet. Please email hello@nexorai.io directly." },
+        { status: 503 },
+      );
+    }
     const { error } = await supabase.from("audit_leads").insert({
       email: parsed.data.email,
       source: "cta_banner",

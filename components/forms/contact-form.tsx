@@ -6,15 +6,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { ContactInput } from "@/lib/validation";
 import { contactSchema } from "@/lib/validation";
+import { contactServiceOptions } from "@/lib/home-data";
 
 const countries = ["🇺🇸 US", "🇬🇧 UK", "🇪🇺 Europe", "🇦🇪 UAE", "🇦🇺 Australia", "🇨🇦 Canada"];
-const services = [
-  "AI Chatbots & Voice Agents",
-  "Workflow Automation",
-  "Lead Generation & CRM",
-  "Content & SEO Automation",
-  "Custom AI Development",
-];
 const budgets = ["Under $500", "$500-$1k", "$1k-$5k", "$5k+"];
 
 export function ContactForm() {
@@ -70,24 +64,24 @@ export function ContactForm() {
     <form onSubmit={onSubmit} className="glass space-y-4 rounded-3xl p-6 md:p-8">
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Full Name" error={errors.fullName?.message}>
-          <input {...register("fullName")} className="input" />
+          <input {...register("fullName")} className="input" autoComplete="name" required />
         </Field>
         <Field label="Company Name" error={errors.companyName?.message}>
-          <input {...register("companyName")} className="input" />
+          <input {...register("companyName")} className="input" autoComplete="organization" required />
         </Field>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Email" error={errors.email?.message}>
-          <input type="email" {...register("email")} className="input" />
+          <input type="email" {...register("email")} className="input" autoComplete="email" required />
         </Field>
         <Field label="WhatsApp/Phone" error={errors.phone?.message}>
-          <input {...register("phone")} className="input" />
+          <input {...register("phone")} className="input" autoComplete="tel" />
         </Field>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Field label="Country" error={errors.country?.message}>
-          <select {...register("country")} className="input">
-            <option value="">Select</option>
+          <select {...register("country")} className="input" autoComplete="country-name" required>
+            <option value="">Select country</option>
             {countries.map((country) => (
               <option key={country} value={country}>
                 {country}
@@ -96,9 +90,9 @@ export function ContactForm() {
           </select>
         </Field>
         <Field label="Service" error={errors.service?.message}>
-          <select {...register("service")} className="input">
-            <option value="">Select</option>
-            {services.map((service) => (
+          <select {...register("service")} className="input" required>
+            <option value="">Select service</option>
+            {contactServiceOptions.map((service) => (
               <option key={service} value={service}>
                 {service}
               </option>
@@ -106,8 +100,8 @@ export function ContactForm() {
           </select>
         </Field>
         <Field label="Monthly budget" error={errors.budget?.message}>
-          <select {...register("budget")} className="input">
-            <option value="">Select</option>
+          <select {...register("budget")} className="input" required>
+            <option value="">Select budget</option>
             {budgets.map((budget) => (
               <option key={budget} value={budget}>
                 {budget}
@@ -117,7 +111,7 @@ export function ContactForm() {
         </Field>
       </div>
       <Field label="Project description" error={errors.description?.message}>
-        <textarea {...register("description")} rows={5} className="input resize-none" />
+        <textarea {...register("description")} rows={5} className="input resize-none" required minLength={20} />
       </Field>
       {serverError ? <p className="text-sm text-red-400">{serverError}</p> : null}
       <button type="submit" disabled={isSubmitting} className="btn-primary w-full">

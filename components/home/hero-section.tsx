@@ -3,8 +3,8 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
 import { Suspense } from "react";
+import { sectionHref } from "@/lib/nav-links";
 import { staggerContainer, staggerItem } from "@/lib/motion-presets";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +32,7 @@ export function HeroSection() {
       };
 
   return (
-    <section className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-[#05070F] px-6 pt-20">
+    <section className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-[#05070F] px-6 pb-12 pt-20 sm:pb-16">
       <div className="mesh-bg" />
       <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-b from-[#090f21] to-[#05070F]" />}>
         <ThreeHero />
@@ -78,10 +78,10 @@ export function HeroSection() {
             variants={reduceMotion ? undefined : staggerItem}
             className="relative z-10 mt-10 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:items-center sm:gap-3"
           >
-            <Link href="#contact" className="btn-primary w-full text-center sm:w-auto">
+            <Link href={sectionHref("contact")} className="btn-primary w-full text-center sm:w-auto">
               Book free AI audit — 30 min
             </Link>
-            <Link href="#results" className="btn-ghost w-full text-center sm:w-auto">
+            <Link href={sectionHref("results")} className="btn-ghost w-full text-center sm:w-auto">
               See proof &amp; results
             </Link>
           </motion.div>
@@ -111,7 +111,6 @@ export function HeroSection() {
           </motion.div>
         </motion.div>
       </div>
-      <ChevronDown className="absolute bottom-5 left-1/2 h-7 w-7 -translate-x-1/2 animate-bounce text-[#00E5FF]/90 sm:bottom-7 sm:h-8 sm:w-8" />
     </section>
   );
 }

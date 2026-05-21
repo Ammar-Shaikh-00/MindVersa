@@ -45,6 +45,8 @@ export function AuditForm() {
           placeholder="Enter your work email"
           {...register("email")}
           className="input h-12 flex-1"
+          autoComplete="email"
+          required
         />
         <button type="submit" className="btn-primary h-12 shrink-0 px-6" disabled={isSubmitting}>
           {isSubmitting ? <Loader2 className="mx-auto h-4 w-4 animate-spin" /> : "Book Free Call"}

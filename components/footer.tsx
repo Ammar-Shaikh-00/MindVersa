@@ -1,13 +1,5 @@
 import Link from "next/link";
-
-const footerLinks = [
-  { label: "Services", href: "#services" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "#contact" },
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms", href: "/terms" },
-];
+import { footerLinks } from "@/lib/nav-links";
 
 export function Footer() {
   return (
@@ -34,18 +26,17 @@ export function Footer() {
           ))}
         </div>
         <div className="flex flex-wrap items-start gap-4 text-sm text-[#8892A4]">
-          <Link href="https://linkedin.com" className="transition-colors duration-200 hover:text-[#00E5FF]">
-            LinkedIn
-          </Link>
-          <Link href="https://twitter.com" className="transition-colors duration-200 hover:text-[#00E5FF]">
-            Twitter/X
-          </Link>
-          <Link href="https://github.com" className="transition-colors duration-200 hover:text-[#00E5FF]">
+          <a
+            href="https://github.com/Ammar-Shaikh-00/Nexor.ai"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors duration-200 hover:text-[#00E5FF]"
+          >
             GitHub
-          </Link>
-          <Link href="https://upwork.com" aria-label="Upwork" className="transition-colors duration-200 hover:text-[#00E5FF]">
-            Upwork
-          </Link>
+          </a>
+          <a href="mailto:hello@nexorai.io" className="transition-colors duration-200 hover:text-[#00E5FF]">
+            hello@nexorai.io
+          </a>
         </div>
       </div>
       <p className="border-t border-white/[0.06] py-4 text-center text-xs text-[#8892A4]">

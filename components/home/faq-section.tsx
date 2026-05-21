@@ -5,7 +5,7 @@ import { SectionReveal } from "@/components/section-reveal";
 
 export function FaqSection() {
   return (
-    <section className="section-block bg-[#05070F]">
+    <section id="faq" className="section-block bg-[#05070F]">
       <div className="section-inner">
         <div className="mx-auto max-w-3xl">
           <SectionReveal>

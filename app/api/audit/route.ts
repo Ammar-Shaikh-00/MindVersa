@@ -1,53 +1,56 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-import { Resend } from "resend";
-import { auditSchema } from "@/lib/validation";
+import { z } from "zod";
+import { AuditSchema } from "@/lib/validations";
+import { getSupabase } from "@/lib/supabase";
+import { FROM_HELLO, getResend } from "@/lib/resend";
 
-function getSupabaseClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key);
-}
+export const runtime = "nodejs";
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
+  let body: unknown;
   try {
-    const raw = await request.json();
-    const parsed = auditSchema.safeParse(raw);
-    if (!parsed.success) {
-      return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Invalid request" }, { status: 400 });
-    }
-
-    const supabase = getSupabaseClient();
-    if (!supabase) {
-      return NextResponse.json(
-        { error: "Form is not configured yet. Please email hello@nexorai.io directly." },
-        { status: 503 },
-      );
-    }
-    const { error } = await supabase.from("audit_leads").insert({
-      email: parsed.data.email,
-      source: "cta_banner",
-      created_at: new Date().toISOString(),
-    });
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    if (process.env.RESEND_API_KEY) {
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      await resend.emails.send({
-        from: "NexorAI <onboarding@resend.dev>",
-        to: [parsed.data.email],
-        subject: "Your free AI audit request is confirmed",
-        html: "<h2>Thanks for booking your free AI audit.</h2><p>Our team will reach out shortly.</p>",
-      });
-    }
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Server error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
+
+  let data;
+  try {
+    data = AuditSchema.parse(body);
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return NextResponse.json({ error: err.issues }, { status: 400 });
+    }
+    return NextResponse.json({ error: "Validation failed" }, { status: 400 });
+  }
+
+  const supabase = getSupabase();
+  if (supabase) {
+    const { error } = await supabase
+      .from("audit_leads")
+      .insert({ email: data.email, source: "cta_banner" });
+    if (error && !/duplicate/i.test(error.message)) {
+      console.error("[audit] supabase insert failed:", error.message);
+    }
+  }
+
+  const resend = getResend();
+  if (resend) {
+    try {
+      await resend.emails.send({
+        from: FROM_HELLO,
+        to: data.email,
+        subject: "Your free NexorAI audit — next steps",
+        html: `
+          <p>Hi there,</p>
+          <p>Thanks for requesting a free AI audit from <b>NexorAI</b>. We'll reply within 2 business hours with a short questionnaire to scope your project.</p>
+          <p>Talk soon,<br/>NexorAI</p>
+        `,
+      });
+    } catch (e) {
+      console.error("[audit] resend failed:", (e as Error).message);
+    }
+  }
+
+  return NextResponse.json({ success: true });
 }

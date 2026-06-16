@@ -2,5 +2,10 @@
 module.exports = {
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://nexorai.io",
   generateRobotsTxt: true,
-  sitemapSize: 5000,
+  generateIndexSitemap: false,
+  changefreq: "weekly",
+  priority: 0.7,
+  robotsTxtOptions: {
+    policies: [{ userAgent: "*", allow: "/" }],
+  },
 };

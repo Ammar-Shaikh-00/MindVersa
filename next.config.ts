@@ -8,6 +8,14 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: projectRoot,
   },
+  images: {
+    formats: ["image/avif", "image/webp"],
+  },
+  experimental: {
+    optimizePackageImports: ["framer-motion", "lucide-react"],
+  },
+  poweredByHeader: false,
+  compress: true,
 };
 
 export default nextConfig;

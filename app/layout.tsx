@@ -4,92 +4,94 @@ import { DM_Sans, Syne } from "next/font/google";
 import { CustomCursor } from "@/components/cursor";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
-import { PageTransition } from "@/components/page-transition";
+import { Noise } from "@/components/noise";
 import "./globals.css";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "700"],
+  weight: ["300", "400", "500"],
+  preload: true,
 });
 
 const syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
   display: "swap",
-  weight: ["800"],
+  weight: ["700", "800"],
+  preload: true,
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nexorai.io";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nexorai.io"),
-  title: "NexorAI — AI Automation Agency for Growing Businesses",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "NexorAI — AI/ML Engineering & Data Science Agency",
+    template: "%s | NexorAI",
+  },
   description:
-    "We build custom AI systems, chatbots, and workflow automations that save time and drive revenue. Trusted by 50+ businesses worldwide.",
+    "Custom ML models, data pipelines, computer vision, NLP systems, and full-stack AI software. 50+ projects delivered worldwide.",
   keywords: [
+    "AI ML engineering agency",
+    "machine learning development",
+    "data science consulting",
+    "computer vision solutions",
+    "NLP development",
+    "custom AI software",
+    "data pipeline engineering",
+    "MLOps consulting",
+    "hire ML engineer",
     "AI automation agency",
-    "AI chatbot development",
-    "business automation",
-    "workflow automation",
-    "AI agency",
-    "custom AI solutions",
   ],
+  authors: [{ name: "NexorAI", url: SITE_URL }],
+  creator: "NexorAI",
+  alternates: { canonical: SITE_URL },
   openGraph: {
-    title: "NexorAI — AI Automation Agency for Growing Businesses",
-    description:
-      "Custom AI automation, intelligent chatbots, and revenue-driving workflows for businesses worldwide.",
-    url: "https://nexorai.io",
-    siteName: "NexorAI",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "NexorAI website preview",
-      },
-    ],
-    locale: "en_US",
     type: "website",
+    locale: "en_US",
+    url: SITE_URL,
+    siteName: "NexorAI",
+    title: "NexorAI — AI/ML Engineering & Data Science Agency",
+    description:
+      "Custom ML models, data pipelines, computer vision, NLP systems, and full-stack AI software.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "NexorAI" }],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@nexorai",
-    creator: "@nexorai",
-    title: "NexorAI — AI Automation Agency",
+    title: "NexorAI — AI/ML Engineering & Data Science Agency",
     description:
-      "We build AI that grows your business with automation systems and chatbots.",
+      "Custom ML models, data pipelines, computer vision, NLP systems, and full-stack AI software.",
     images: ["/og-image.png"],
   },
-  alternates: {
-    canonical: "https://nexorai.io",
-  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+
   return (
-    <html
-      lang="en"
-      className={`${dmSans.variable} ${syne.variable} h-full antialiased`}
-    >
-      <body className="min-h-full overflow-x-hidden flex flex-col bg-[#05070F] text-white">
-        <Script id="gtag-script" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID ?? "G-XXXXXXXXXX"}');
-          `}
-        </Script>
+    <html lang="en" className={`${dmSans.variable} ${syne.variable}`}>
+      <body className="min-h-screen overflow-x-hidden bg-bg-primary text-text-primary antialiased">
+        {gaId && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="gtag-init" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());gtag('config','${gaId}');`}
+            </Script>
+          </>
+        )}
         <CustomCursor />
-        <div className="noise-overlay" aria-hidden />
+        <Noise />
         <Navbar />
-        <main className="flex-1">
-          <PageTransition>{children}</PageTransition>
-        </main>
+        <main className="pt-0">{children}</main>
         <Footer />
       </body>
     </html>

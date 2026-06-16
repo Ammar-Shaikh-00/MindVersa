@@ -1,29 +1,72 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { posts } from "@/lib/blog";
+import { POSTS } from "@/lib/blog-posts";
 
 export const metadata: Metadata = {
-  title: "NexorAI Blog | AI Automation Insights",
-  description: "Insights on AI automation, business growth, and case studies from NexorAI.",
+  title: "AI & Data Insights",
+  description: "Field notes on ML, data engineering, computer vision and AI product work from the NexorAI team.",
 };
 
-export default function BlogPage() {
+export default function BlogIndex() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-24 md:px-8">
-      <h1 className="text-5xl font-black">NexorAI Blog</h1>
-      <p className="mt-4 text-slate-300">Actionable AI automation playbooks for growth teams.</p>
-      <div className="mt-10 grid gap-5 md:grid-cols-3">
-        {posts.map((post) => (
-          <article key={post.slug} className="glass rounded-2xl p-5">
-            <p className="text-xs uppercase tracking-[0.2em] text-[#00E5FF]">{post.category}</p>
-            <h2 className="mt-2 text-2xl font-black leading-tight">{post.title}</h2>
-            <p className="mt-3 text-sm text-slate-300">{post.excerpt}</p>
-            <p className="mt-4 text-xs text-slate-400">{post.date} · {post.readTime}</p>
-            <Link href={`/blog/${post.slug}`} className="mt-4 inline-block text-sm text-[#00E5FF]">
-              Read article →
+    <section className="section" style={{ background: "var(--bg-primary)", paddingTop: 140 }}>
+      <div className="container-x">
+        <span className="label-eyebrow">JOURNAL</span>
+        <h1
+          className="font-display"
+          style={{
+            fontSize: "clamp(40px, 5vw, 64px)",
+            fontWeight: 800,
+            letterSpacing: "-2px",
+            lineHeight: 1.05,
+            marginTop: 14,
+          }}
+        >
+          AI &amp; Data Insights
+        </h1>
+        <p className="mt-4 max-w-[560px] text-[16px]" style={{ color: "var(--text-secondary)" }}>
+          Field notes on ML, data engineering, computer vision and AI product work.
+        </p>
+
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {POSTS.map((p) => (
+            <Link
+              key={p.slug}
+              href={`/blog/${p.slug}`}
+              className="group flex flex-col rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1"
+              style={{
+                background: "var(--bg-elevated)",
+                border: "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              <span
+                className="self-start rounded-full px-3 py-1 text-[10px] uppercase"
+                style={{
+                  background: "rgba(0,229,255,0.08)",
+                  border: "1px solid rgba(0,229,255,0.2)",
+                  color: "var(--accent-cyan)",
+                  fontWeight: 600,
+                  letterSpacing: 2,
+                }}
+              >
+                {p.tag}
+              </span>
+              <h2
+                className="mt-5 font-display group-hover:text-accent-cyan"
+                style={{ fontWeight: 700, fontSize: 20, letterSpacing: "-0.5px", lineHeight: 1.25 }}
+              >
+                {p.title}
+              </h2>
+              <p className="mt-3 flex-1 text-[14px]" style={{ color: "var(--text-secondary)", lineHeight: 1.65 }}>
+                {p.excerpt}
+              </p>
+              <div className="mt-6 flex items-center justify-between text-[12px]" style={{ color: "var(--text-muted)" }}>
+                <span>{p.date}</span>
+                <span>{p.read}</span>
+              </div>
             </Link>
-          </article>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { AuditSchema } from "@/lib/validations";
 import { getSupabase } from "@/lib/supabase";
-import { FROM_HELLO, getResend } from "@/lib/resend";
+import { FROM_HELLO, TO_AGENCY, getResend } from "@/lib/resend";
 
 export const runtime = "nodejs";
 
@@ -36,21 +36,50 @@ export async function POST(req: Request) {
 
   const resend = getResend();
   if (resend) {
-    try {
-      await resend.emails.send({
+    // Notify agency always
+    const notify = await resend.emails.send({
+      from: FROM_HELLO,
+      to: TO_AGENCY,
+      subject: `New audit request: ${data.email}`,
+      html: `<p>New free-audit signup: <b>${escapeHtml(data.email)}</b></p>`,
+    });
+    if (notify.error) {
+      console.error("[audit] notify email failed:", notify.error.message);
+    } else {
+      console.log("[audit] notify email sent:", notify.data?.id);
+    }
+
+    // Visitor welcome only if allowed without a verified domain
+    const canEmailVisitor =
+      data.email.toLowerCase() === TO_AGENCY.toLowerCase() ||
+      !FROM_HELLO.includes("onboarding@resend.dev");
+
+    if (canEmailVisitor) {
+      const welcome = await resend.emails.send({
         from: FROM_HELLO,
         to: data.email,
-        subject: "Your free NexorAI audit — next steps",
+        subject: "Your free MindVersa audit — next steps",
         html: `
           <p>Hi there,</p>
-          <p>Thanks for requesting a free AI audit from <b>NexorAI</b>. We'll reply within 2 business hours with a short questionnaire to scope your project.</p>
-          <p>Talk soon,<br/>NexorAI</p>
+          <p>Thanks for requesting a free AI audit from <b>MindVersa</b>. We'll reply within 2 business hours with a short questionnaire to scope your project.</p>
+          <p>Talk soon,<br/>MindVersa</p>
         `,
       });
-    } catch (e) {
-      console.error("[audit] resend failed:", (e as Error).message);
+      if (welcome.error) {
+        console.error("[audit] welcome email failed:", welcome.error.message);
+      }
+    } else {
+      console.log(
+        "[audit] skipped visitor welcome (verify your domain in Resend to enable)",
+      );
     }
   }
 
   return NextResponse.json({ success: true });
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/[&<>"']/g, (c) =>
+    c === "&" ? "&amp;" : c === "<" ? "&lt;" : c === ">" ? "&gt;" : c === '"' ? "&quot;" : "&#39;",
+  );
 }

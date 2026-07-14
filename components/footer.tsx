@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Logo } from "@/components/logo";
+import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/site";
 
 const COL_COMPANY = [
   { href: "/#services", label: "Services" },
@@ -36,7 +38,7 @@ function FooterColumn({
   return (
     <div>
       <p
-        className="text-[11px] font-semibold uppercase tracking-[2px]"
+        className="text-[12px] font-semibold uppercase tracking-[2px]"
         style={{ color: "var(--text-muted)" }}
       >
         {title}
@@ -49,7 +51,7 @@ function FooterColumn({
                 href={item.href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="text-[14px] leading-snug transition-colors duration-150 hover:text-[var(--text-primary)]"
+                className="text-[15px] leading-snug transition-colors duration-150 hover:text-[var(--text-primary)]"
                 style={{ color: "var(--text-secondary)" }}
               >
                 {item.label}
@@ -57,7 +59,7 @@ function FooterColumn({
             ) : (
               <Link
                 href={item.href}
-                className="text-[14px] leading-snug transition-colors duration-150 hover:text-[var(--text-primary)]"
+                className="text-[15px] leading-snug transition-colors duration-150 hover:text-[var(--text-primary)]"
                 style={{ color: "var(--text-secondary)" }}
               >
                 {item.label}
@@ -84,21 +86,18 @@ export function Footer() {
       <div className="container-x pt-14 pb-8 md:pt-16 md:pb-10">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,2fr)] lg:gap-16">
           <div className="max-w-sm">
-            <Link href="/" className="inline-flex font-display text-[22px] font-extrabold tracking-tight">
-              <span style={{ color: "var(--text-primary)" }}>Nexor</span>
-              <span style={{ color: "var(--accent-cyan)" }}>AI</span>
-            </Link>
-            <p className="mt-4 text-[14px] leading-[1.7]" style={{ color: "var(--text-secondary)" }}>
-              AI and ML engineering for production systems — from data pipelines to deployed models.
+            <Logo size="lg" />
+            <p className="mt-4 text-[15px] leading-[1.7]" style={{ color: "var(--text-secondary)" }}>
+              End-to-end AI software — chatbots, automation, data platforms, and custom systems for growing businesses.
             </p>
             <a
-              href="mailto:hello@nexorai.io"
-              className="mt-5 inline-block text-[14px] font-medium transition-colors duration-150 hover:text-[var(--accent-cyan)]"
+              href={CONTACT_MAILTO}
+              className="mt-5 inline-block text-[15px] font-medium transition-colors duration-150 hover:text-[var(--accent-cyan)]"
               style={{ color: "var(--text-primary)" }}
             >
-              hello@nexorai.io
+              {CONTACT_EMAIL}
             </a>
-            <p className="mt-2 text-[12px]" style={{ color: "var(--text-muted)" }}>
+            <p className="mt-2 text-[13px]" style={{ color: "var(--text-muted)" }}>
               US · UK · EU · AUS · Middle East
             </p>
           </div>
@@ -116,7 +115,7 @@ export function Footer() {
           style={{ borderColor: "rgba(255,255,255,0.06)" }}
         >
           <p className="text-[13px]" style={{ color: "var(--text-muted)" }}>
-            © {year} NexorAI. All rights reserved.
+            © {year} MindVersa. All rights reserved.
           </p>
           <p className="text-[13px]" style={{ color: "var(--text-muted)" }}>
             Built for teams that need AI shipped, not slideware.

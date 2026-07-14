@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | NexorAI",
-  description: "Terms and service scope for NexorAI engagements.",
+  title: "Terms of Service",
+  description: "Terms and service scope for MindVersa engagements.",
 };
 
 export default function TermsPage() {

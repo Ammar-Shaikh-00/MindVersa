@@ -10,6 +10,13 @@ export function getResend(): Resend | null {
   return cached;
 }
 
-export const FROM_NOTIFY = "NexorAI Website <noreply@nexorai.io>";
-export const FROM_HELLO = "NexorAI <hello@nexorai.io>";
-export const TO_AGENCY = "hello@nexorai.io";
+/** Use onboarding@resend.dev until your domain is verified in Resend. */
+const fromAddress =
+  process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+
+export const FROM_NOTIFY = `MindVersa Website <${fromAddress}>`;
+export const FROM_HELLO = `MindVersa <${fromAddress}>`;
+
+/** Must be your Resend account email while using onboarding@resend.dev */
+export const TO_AGENCY =
+  process.env.CONTACT_TO_EMAIL ?? "versamind003@gmail.com";

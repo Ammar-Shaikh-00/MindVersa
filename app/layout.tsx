@@ -1,11 +1,20 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { DM_Sans, Syne } from "next/font/google";
 import { CustomCursor } from "@/components/cursor";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { Noise } from "@/components/noise";
+import { JsonLd } from "@/components/json-ld";
+import { BRAND_NAME, SITE_URL } from "@/lib/site";
+import { organizationJsonLd, PRIMARY_KEYWORDS, SITE_DESCRIPTION, websiteJsonLd } from "@/lib/seo";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#05070F",
+};
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -23,49 +32,36 @@ const syne = Syne({
   preload: true,
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nexorai.io";
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "NexorAI — AI/ML Engineering & Data Science Agency",
-    template: "%s | NexorAI",
+    default: `${BRAND_NAME} — AI Software & Engineering Agency`,
+    template: `%s | ${BRAND_NAME}`,
   },
-  description:
-    "Custom ML models, data pipelines, computer vision, NLP systems, and full-stack AI software. 50+ projects delivered worldwide.",
-  keywords: [
-    "AI ML engineering agency",
-    "machine learning development",
-    "data science consulting",
-    "computer vision solutions",
-    "NLP development",
-    "custom AI software",
-    "data pipeline engineering",
-    "MLOps consulting",
-    "hire ML engineer",
-    "AI automation agency",
-  ],
-  authors: [{ name: "NexorAI", url: SITE_URL }],
-  creator: "NexorAI",
+  description: SITE_DESCRIPTION,
+  keywords: PRIMARY_KEYWORDS,
+  authors: [{ name: BRAND_NAME, url: SITE_URL }],
+  creator: BRAND_NAME,
   alternates: { canonical: SITE_URL },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: SITE_URL,
-    siteName: "NexorAI",
-    title: "NexorAI — AI/ML Engineering & Data Science Agency",
-    description:
-      "Custom ML models, data pipelines, computer vision, NLP systems, and full-stack AI software.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "NexorAI" }],
+    siteName: BRAND_NAME,
+    title: `${BRAND_NAME} — AI Software & Engineering Agency`,
+    description: SITE_DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "NexorAI — AI/ML Engineering & Data Science Agency",
-    description:
-      "Custom ML models, data pipelines, computer vision, NLP systems, and full-stack AI software.",
-    images: ["/og-image.png"],
+    title: `${BRAND_NAME} — AI Software & Engineering Agency`,
+    description: SITE_DESCRIPTION,
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
+  category: "technology",
 };
 
 export default function RootLayout({
@@ -88,6 +84,8 @@ export default function RootLayout({
             </Script>
           </>
         )}
+        <JsonLd data={organizationJsonLd()} />
+        <JsonLd data={websiteJsonLd()} />
         <CustomCursor />
         <Noise />
         <Navbar />

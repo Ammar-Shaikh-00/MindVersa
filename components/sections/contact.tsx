@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { ContactSchema, type ContactInput } from "@/lib/validations";
+import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/site";
 
 type State = "idle" | "loading" | "success" | "error";
 
@@ -71,16 +72,28 @@ export function ContactSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5 }}
-            className="section-header section-header--left rounded-3xl border p-7 md:p-9"
+            className="section-header section-header--left rounded-3xl border p-5 sm:p-7 md:p-9"
             style={{
               borderColor: "rgba(255,255,255,0.08)",
               background: "linear-gradient(180deg, rgba(15,19,32,0.82), rgba(15,19,32,0.55))",
             }}
           >
             <span className="label-eyebrow">CONTACT</span>
-            <h2 className="h2-section">Let's Talk About Your Data</h2>
+            <h2
+              className="font-display font-extrabold"
+              style={{
+                fontSize: "clamp(28px, 3.2vw, 42px)",
+                lineHeight: 1.15,
+                letterSpacing: "-1.2px",
+                color: "var(--text-primary)",
+                marginBottom: 16,
+              }}
+            >
+              <span className="block">Let&apos;s Build Your</span>
+              <span className="block">AI Solution</span>
+            </h2>
             <p className="section-subtitle" style={{ maxWidth: 440 }}>
-              Tell us your problem. We'll tell you if AI can solve it — and exactly how we'd build it.
+              Tell us your problem. We&apos;ll tell you if AI can solve it — and exactly how we&apos;d build it.
             </p>
 
             <div className="mt-8 flex items-center gap-2 text-[14px]">
@@ -95,11 +108,11 @@ export function ContactSection() {
 
             <div className="mt-7 space-y-3 text-[15px]">
               <a
-                href="mailto:hello@nexorai.io"
+                href={CONTACT_MAILTO}
                 className="block transition-colors hover:text-accent-cyan"
                 style={{ color: "var(--text-primary)", fontWeight: 500 }}
               >
-                ✉  hello@nexorai.io
+                ✉  {CONTACT_EMAIL}
               </a>
               <a
                 href="https://calendly.com/"
@@ -138,7 +151,7 @@ export function ContactSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, delay: 0.08 }}
-            className="space-y-4 rounded-3xl border p-6 md:p-8"
+            className="space-y-4 rounded-3xl border p-5 sm:p-6 md:p-8"
             style={{
               borderColor: "rgba(255,255,255,0.08)",
               background: "linear-gradient(180deg, rgba(15,19,32,0.9), rgba(10,13,26,0.82))",

@@ -2,47 +2,13 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-
-const QA = [
-  {
-    q: "What types of AI/ML projects do you take on?",
-    a: "We handle the full spectrum: predictive models, NLP systems, computer vision, recommendation engines, data pipelines, MLOps setup, and full-stack AI applications.",
-  },
-  {
-    q: "Do you work with our existing data?",
-    a: "Yes. We start with whatever you have — spreadsheets, databases, APIs, unstructured documents. Data cleaning and preprocessing is part of every project.",
-  },
-  {
-    q: "How accurate are the models you build?",
-    a: "It depends on data quality and the problem type, but our average model accuracy across production deployments is 94%+. We always show you validation metrics before launch.",
-  },
-  {
-    q: "What if we don't have enough data?",
-    a: "We'll tell you honestly. If data is insufficient, we'll recommend data collection strategies, synthetic data augmentation, or transfer learning approaches.",
-  },
-  {
-    q: "Do you handle model deployment and hosting?",
-    a: "Yes — from FastAPI containerized APIs on AWS/GCP to real-time inference endpoints. We handle DevOps so you don't have to.",
-  },
-  {
-    q: "What industries do you serve?",
-    a: "Manufacturing, fintech, retail, healthcare, logistics, SaaS, real estate, and marketing. If you have data and a business problem, we have a solution.",
-  },
-  {
-    q: "How do you ensure data privacy?",
-    a: "We sign NDAs before any data sharing. All data is processed in encrypted environments. We never use client data to train models for other clients.",
-  },
-  {
-    q: "How do I start?",
-    a: "Book a free 30-minute technical discovery call. No sales pitch — just a conversation about your data, your problem, and what's possible.",
-  },
-];
+import { FAQ_ITEMS } from "@/lib/faq";
 
 export function FaqSection() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="section" style={{ background: "var(--bg-primary)" }}>
+    <section id="faq" className="section" style={{ background: "var(--bg-primary)" }}>
       <div className="container-x" style={{ maxWidth: 800 }}>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -54,12 +20,12 @@ export function FaqSection() {
           <span className="label-eyebrow">FAQ</span>
           <h2 className="h2-section">Common Questions</h2>
           <p className="section-subtitle">
-            Practical answers about delivery, data quality, security, and model performance.
+            Practical answers about hiring an ML partner, chatbots, data quality, security, and model performance.
           </p>
         </motion.div>
 
         <div className="mt-12 space-y-2">
-          {QA.map((item, i) => {
+          {FAQ_ITEMS.map((item, i) => {
             const isOpen = open === i;
             return (
               <div
@@ -74,12 +40,12 @@ export function FaqSection() {
                   onClick={() => setOpen(isOpen ? null : i)}
                   aria-expanded={isOpen}
                   data-hover
-                  className="flex w-full items-center justify-between gap-4 text-left transition-colors"
+                  className="faq-question-btn flex w-full items-center justify-between gap-3 text-left transition-colors sm:gap-4"
                   style={{
-                    padding: "20px 24px",
+                    padding: "18px 16px",
                     fontFamily: "var(--font-syne), sans-serif",
                     fontWeight: 600,
-                    fontSize: 17,
+                    fontSize: 16,
                     color: isOpen ? "var(--accent-cyan)" : "var(--text-primary)",
                   }}
                 >
@@ -110,8 +76,8 @@ export function FaqSection() {
                       transition={{ duration: 0.25, ease: "easeOut" }}
                     >
                       <div
-                        className="px-6 pb-6 text-[15px]"
-                        style={{ color: "var(--text-secondary)", lineHeight: 1.7 }}
+                        className="px-6 pb-6 text-[16px]"
+                        style={{ color: "var(--text-secondary)", lineHeight: 1.75 }}
                       >
                         {item.a}
                       </div>

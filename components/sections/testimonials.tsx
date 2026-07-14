@@ -109,7 +109,7 @@ function TestimonialCard({
 
       <StarRating />
 
-      <blockquote className="mt-5 flex-1 text-[15px] leading-[1.75] text-[var(--text-secondary)]">
+      <blockquote className="mt-5 flex-1 text-[16px] leading-[1.8] text-[var(--text-secondary)]">
         &ldquo;{item.quote}&rdquo;
       </blockquote>
 

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { AuditSchema, type AuditInput } from "@/lib/validations";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 type State = "idle" | "loading" | "success" | "error";
 
@@ -35,7 +36,7 @@ export function CtaBannerSection() {
       reset();
     } catch (e) {
       setState("error");
-      setErrorMsg("Something went wrong. Try again or email hello@nexorai.io.");
+      setErrorMsg(`Something went wrong. Try again or email ${CONTACT_EMAIL}.`);
     }
   };
 
@@ -97,10 +98,10 @@ export function CtaBannerSection() {
               className="mx-auto font-display"
               style={{
                 maxWidth: 760,
-                fontSize: "clamp(34px, 4.2vw, 58px)",
+                fontSize: "clamp(28px, 6vw, 60px)",
                 fontWeight: 800,
-                letterSpacing: "-1.4px",
-                lineHeight: 1.04,
+                letterSpacing: "-1.2px",
+                lineHeight: 1.1,
               }}
             >
               Have a Problem AI Can Solve?

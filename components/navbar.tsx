@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Logo } from "@/components/logo";
 
 const LINKS = [
   { href: "/#services", label: "Services" },
@@ -47,17 +48,15 @@ export function Navbar() {
         }}
       >
         <div className="container-x flex h-full items-center justify-between">
-          <Link href="/" className="font-display text-[20px] font-extrabold tracking-tight">
-            <span className="text-text-primary">Nexor</span>
-            <span className="text-accent-cyan">AI</span>
-          </Link>
+          <Logo size="sm" className="md:hidden" />
+          <Logo size="md" className="hidden md:inline-flex" />
 
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-7 xl:gap-8">
             {LINKS.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
-                className="text-[14px] font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary"
+                className="text-[14px] font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary xl:text-[15px]"
               >
                 {l.label}
               </Link>
@@ -66,7 +65,7 @@ export function Navbar() {
 
           <Link
             href="/#contact"
-            className="hidden md:inline-flex items-center rounded-lg border border-[rgba(255,255,255,0.15)] px-5 py-2.5 text-[14px] font-semibold text-text-primary transition-all duration-200 hover:border-accent-cyan hover:text-accent-cyan hover:bg-[rgba(0,229,255,0.05)]"
+            className="hidden md:inline-flex items-center rounded-lg border border-[rgba(255,255,255,0.15)] px-4 py-2 text-[14px] font-semibold text-text-primary transition-all duration-200 hover:border-accent-cyan hover:text-accent-cyan hover:bg-[rgba(0,229,255,0.05)] lg:px-5 lg:py-2.5 lg:text-[15px]"
           >
             Get Free Audit
           </Link>
@@ -76,7 +75,7 @@ export function Navbar() {
             aria-label="Toggle menu"
             aria-expanded={open}
             data-hover
-            className="md:hidden flex h-10 w-10 flex-col items-center justify-center gap-[5px]"
+            className="lg:hidden flex h-10 w-10 flex-col items-center justify-center gap-[5px]"
           >
             <span
               className="block h-[2px] w-[18px] bg-text-primary transition-transform duration-300"
@@ -97,7 +96,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 md:hidden"
+            className="fixed inset-0 z-40 lg:hidden"
             style={{
               background: "rgba(5,7,15,0.97)",
               backdropFilter: "blur(20px)",

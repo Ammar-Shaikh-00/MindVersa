@@ -57,27 +57,43 @@ export async function POST(req: Request) {
       <p>${escapeHtml(data.message).replace(/\n/g, "<br/>")}</p>
     `;
 
-    try {
-      await resend.emails.send({
-        from: FROM_NOTIFY,
-        to: TO_AGENCY,
-        subject: `New Lead: ${data.name} — ${data.company}`,
-        html: summaryHtml,
-        replyTo: data.email,
-      });
-      await resend.emails.send({
+    const notify = await resend.emails.send({
+      from: FROM_NOTIFY,
+      to: TO_AGENCY,
+      subject: `New Lead: ${data.name} — ${data.company}`,
+      html: summaryHtml,
+      replyTo: data.email,
+    });
+    if (notify.error) {
+      console.error("[contact] notify email failed:", notify.error.message);
+    } else {
+      console.log("[contact] notify email sent:", notify.data?.id);
+    }
+
+    // Without a verified domain, Resend only allows sending to your own account email.
+    const canConfirmVisitor =
+      data.email.toLowerCase() === TO_AGENCY.toLowerCase() ||
+      !FROM_HELLO.includes("onboarding@resend.dev");
+
+    if (canConfirmVisitor) {
+      const confirm = await resend.emails.send({
         from: FROM_HELLO,
         to: data.email,
         subject: "We received your message — talk soon!",
         html: `
           <p>Hi ${escapeHtml(data.name.split(" ")[0] ?? data.name)},</p>
-          <p>Thanks for reaching out to <b>NexorAI</b>. We've received your message and will reply within 2 business hours.</p>
+          <p>Thanks for reaching out to <b>MindVersa</b>. We've received your message and will reply within 2 business hours.</p>
           <p>In the meantime, feel free to <a href="https://calendly.com/">book a 30-min technical discovery call</a>.</p>
-          <p>— The NexorAI team</p>
+          <p>— The MindVersa team</p>
         `,
       });
-    } catch (e) {
-      console.error("[contact] resend failed:", (e as Error).message);
+      if (confirm.error) {
+        console.error("[contact] confirm email failed:", confirm.error.message);
+      }
+    } else {
+      console.log(
+        "[contact] skipped visitor confirmation (verify your domain in Resend to enable)",
+      );
     }
   }
 

@@ -51,8 +51,17 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 1024px) {
+  html,
+  body {
+    font-size: 17px;
+  }
 }
 
 html {
@@ -190,34 +199,35 @@ h6 {
 .label-eyebrow {
   display: block;
   font-family: var(--font-dm-sans), sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 2.5px;
   text-transform: uppercase;
   color: var(--accent-cyan);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .h2-section {
   font-family: var(--font-syne), sans-serif;
   font-weight: 800;
-  font-size: clamp(32px, 4vw, 52px);
-  line-height: 1.05;
-  letter-spacing: -1.5px;
+  font-size: clamp(28px, 5.5vw, 56px);
+  line-height: 1.12;
+  letter-spacing: -1.4px;
   color: var(--text-primary);
   margin-bottom: 16px;
 }
 
 .section-subtitle {
   font-family: var(--font-dm-sans), sans-serif;
-  font-size: 16px;
+  font-size: clamp(16px, 1.15vw, 19px);
   font-weight: 400;
+  line-height: 1.7;
   color: var(--text-secondary);
-  max-width: 560px;
+  max-width: 620px;
 }
 
 .section-header {
-  padding-top: 80px;
+  padding-top: 0;
 }
 .section-header--center {
   text-align: center;
@@ -249,7 +259,7 @@ h6 {
   border-radius: 8px;
   font-family: var(--font-dm-sans), sans-serif;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   color: #05070f;
   background: linear-gradient(135deg, #00e5ff 0%, #7b61ff 100%);
   transition:
@@ -279,7 +289,7 @@ h6 {
   color: var(--text-primary);
   font-family: var(--font-dm-sans), sans-serif;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 16px;
   transition:
     border-color 220ms ease,
     color 220ms ease,
@@ -742,6 +752,11 @@ h6 {
 .services-grid > * {
   grid-column: span 12;
 }
+@media (min-width: 768px) and (max-width: 1023px) {
+  .services-grid > * {
+    grid-column: span 6;
+  }
+}
 @media (min-width: 1024px) {
   .svc-a {
     grid-column: span 7;
@@ -835,7 +850,7 @@ h6 {
 .svc-title {
   font-family: var(--font-syne), sans-serif;
   font-weight: 700;
-  font-size: clamp(17px, 1.4vw, 19px);
+  font-size: clamp(19px, 1.7vw, 22px);
   letter-spacing: -0.5px;
   color: var(--text-primary);
   line-height: 1.25;
@@ -848,10 +863,10 @@ h6 {
 }
 
 .svc-desc {
-  margin-top: 10px;
+  margin-top: 12px;
   font-family: var(--font-dm-sans), sans-serif;
-  font-size: 14px;
-  line-height: 1.65;
+  font-size: 15px;
+  line-height: 1.7;
   color: var(--text-secondary);
 }
 
@@ -941,7 +956,7 @@ h6 {
   position: relative;
   z-index: 1;
   font-family: var(--font-dm-sans), sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -954,7 +969,7 @@ h6 {
   margin-top: 12px;
   font-family: var(--font-syne), sans-serif;
   font-weight: 700;
-  font-size: clamp(20px, 2vw, 24px);
+  font-size: clamp(22px, 2.2vw, 28px);
   line-height: 1.25;
   letter-spacing: -0.5px;
   color: var(--result-accent, #00e5ff);
@@ -965,7 +980,7 @@ h6 {
   z-index: 1;
   margin-top: 10px;
   font-family: var(--font-dm-sans), sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -1122,24 +1137,28 @@ h6 {
 .results-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: auto;
-  padding-top: 28px;
+  gap: 8px;
+  width: 100%;
   margin-top: 32px;
+  padding-top: 28px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .results-stat {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
   min-width: 0;
+  text-align: center;
+  padding: 0 6px;
 }
 
 .results-stat-value {
   font-family: var(--font-syne), sans-serif;
   font-weight: 800;
-  font-size: 24px;
+  font-size: clamp(22px, 2.4vw, 28px);
   line-height: 1;
   letter-spacing: -0.5px;
   color: var(--text-primary);
@@ -1148,8 +1167,31 @@ h6 {
 .results-stat-label {
   font-family: var(--font-dm-sans), sans-serif;
   font-size: 12px;
-  line-height: 1.4;
+  line-height: 1.35;
   color: var(--text-secondary);
+  max-width: 7.5rem;
+}
+
+/* Hero bottom stats — equal columns, centered */
+.hero-stats {
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .hero-stat:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-stat:nth-child(odd) {
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .hero-stat {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -1177,8 +1219,13 @@ h6 {
 
 @media (max-width: 639px) {
   .results-stats {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .results-stat-label {
+    font-size: 11px;
+    max-width: 5.5rem;
   }
 
   .result-case-row {
@@ -1319,16 +1366,16 @@ h6 {
 .process-card-title {
   font-family: var(--font-syne), sans-serif;
   font-weight: 700;
-  font-size: 17px;
+  font-size: 19px;
   line-height: 1.3;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .process-card-desc {
   font-family: var(--font-dm-sans), sans-serif;
-  font-size: 14px;
-  line-height: 1.65;
+  font-size: 15px;
+  line-height: 1.7;
   color: var(--text-secondary);
   margin-top: auto;
 }
@@ -1489,3 +1536,31 @@ h6 {
 ::-webkit-scrollbar {
   display: none;
 }
+
+/* ─────────────────────────────  Responsive helpers  ───────────────────────────── */
+
+@media (max-width: 767px) {
+  .section {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
+  .hero-blob {
+    width: 280px !important;
+    height: 280px !important;
+    opacity: 0.7;
+  }
+
+  .faq-question-btn {
+    padding: 16px 18px !important;
+    font-size: 16px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .container-x {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
+

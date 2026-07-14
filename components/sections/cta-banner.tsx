@@ -99,7 +99,7 @@ export function CtaBannerSection() {
               style={{
                 maxWidth: 760,
                 fontSize: "clamp(28px, 6vw, 60px)",
-                fontWeight: 800,
+                fontWeight: 700,
                 letterSpacing: "-1.2px",
                 lineHeight: 1.1,
               }}

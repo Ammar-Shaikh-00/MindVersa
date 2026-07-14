@@ -250,11 +250,14 @@ export default async function BlogPost({ params }: { params: Promise<Params> }) 
       <ReadingProgress />
       <article className="section" style={{ background: "var(--bg-primary)", paddingTop: 140 }}>
         <div className="container-x" style={{ maxWidth: 760 }}>
-          <Link href="/blog" className="text-[13px] text-accent-cyan hover:opacity-80">
+          <Link
+            href="/blog"
+            className="inline-block text-[13px] text-accent-cyan hover:opacity-80"
+          >
             ← Back to journal
           </Link>
           <span
-            className="mt-6 inline-block rounded-full px-3 py-1 text-[10px] uppercase"
+            className="mt-6 block w-fit rounded-full px-3 py-1 text-[10px] uppercase"
             style={{
               background: "rgba(0,229,255,0.08)",
               border: "1px solid rgba(0,229,255,0.2)",
@@ -269,7 +272,7 @@ export default async function BlogPost({ params }: { params: Promise<Params> }) 
             className="mt-4 font-display"
             style={{
               fontSize: "clamp(36px, 5vw, 58px)",
-              fontWeight: 800,
+              fontWeight: 700,
               letterSpacing: "-2px",
               lineHeight: 1.1,
             }}

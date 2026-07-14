@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { DM_Sans, Syne } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import { CustomCursor } from "@/components/cursor";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
@@ -16,19 +16,19 @@ export const viewport: Viewport = {
   themeColor: "#05070F",
 };
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const inter = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500"],
+  weight: ["400", "500", "600", "700"],
   preload: true,
 });
 
-const syne = Syne({
-  variable: "--font-syne",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
-  weight: ["700", "800"],
+  weight: ["500", "600", "700"],
   preload: true,
 });
 
@@ -70,7 +70,7 @@ export default function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
   return (
-    <html lang="en" className={`${dmSans.variable} ${syne.variable}`}>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <body className="min-h-screen overflow-x-hidden bg-bg-primary text-text-primary antialiased">
         {gaId && (
           <>

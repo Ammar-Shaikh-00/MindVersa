@@ -52,7 +52,7 @@ export default function OpenGraphImage() {
         <div
           style={{
             fontSize: 64,
-            fontWeight: 800,
+            fontWeight: 700,
             lineHeight: 1.1,
             letterSpacing: "-0.04em",
             maxWidth: 920,

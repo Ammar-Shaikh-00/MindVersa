@@ -54,27 +54,29 @@ const TESTIMONIALS = [
     quote:
       "Their workflow automation connected our CRM, billing, and support stack end to end. We cut 26 hours of manual work per employee each week within the first month.",
   },
+  {
+    name: "Omar Farooq",
+    title: "Operations Lead",
+    company: "Karachi Freight Co.",
+    location: "Pakistan",
+    initials: "OF",
+    accent: "#00E5FF",
+    quote:
+      "We were drowning in WhatsApp updates and Excel sheets. They hooked our dispatch board to live tracking — drivers hate fewer phone calls, which is how I know it worked.",
+  },
+  {
+    name: "Priya Nair",
+    title: "Product Manager",
+    company: "Hearthline Health",
+    location: "Canada",
+    initials: "PN",
+    accent: "#FF6B35",
+    quote:
+      "Honestly I expected a demo that never shipped. We got a working intake triage assistant in production, and our nurses stopped asking me when the pilot would end.",
+  },
 ] as const;
 
-function getTestimonialCards(track: HTMLDivElement) {
-  return Array.from(track.querySelectorAll<HTMLElement>("[data-testimonial-card]"));
-}
-
-function scrollTrackToIndex(track: HTMLDivElement, index: number) {
-  const cards = getTestimonialCards(track);
-  if (!cards.length) return 0;
-
-  const normalized = ((index % cards.length) + cards.length) % cards.length;
-  const card = cards[normalized];
-  const paddingLeft = Number.parseFloat(getComputedStyle(track).paddingLeft) || 0;
-
-  track.scrollTo({
-    left: Math.max(0, card.offsetLeft - paddingLeft),
-    behavior: "smooth",
-  });
-
-  return normalized;
-}
+const GAP_PX = 24;
 
 function StarRating() {
   return (
@@ -90,14 +92,22 @@ function StarRating() {
 
 function TestimonialCard({
   item,
+  height,
 }: {
   item: (typeof TESTIMONIALS)[number];
+  height: number;
 }) {
   return (
     <article
       data-testimonial-card
-      className="relative flex w-[min(85vw,400px)] shrink-0 grow-0 snap-center flex-col rounded-2xl border border-white/[0.08] bg-[var(--bg-elevated)] p-7 md:w-[400px] md:snap-start md:p-8"
-      style={{ boxShadow: "0 16px 40px rgba(0,0,0,0.22)" }}
+      className="relative w-[min(85vw,400px)] shrink-0 grow-0 rounded-2xl border border-white/[0.08] bg-[var(--bg-elevated)] p-7 md:w-[400px] md:p-8"
+      style={{
+        boxShadow: "0 16px 40px rgba(0,0,0,0.22)",
+        display: "flex",
+        flexDirection: "column",
+        height,
+        minHeight: 340,
+      }}
     >
       <span
         className="absolute inset-y-0 left-0 w-[3px] rounded-l-2xl"
@@ -107,30 +117,45 @@ function TestimonialCard({
         aria-hidden
       />
 
-      <StarRating />
+      <div style={{ flex: "0 0 auto" }}>
+        <StarRating />
+      </div>
 
-      <blockquote className="mt-5 flex-1 text-[16px] leading-[1.8] text-[var(--text-secondary)]">
+      <blockquote
+        className="m-0 text-left text-[16px] text-[var(--text-secondary)]"
+        style={{
+          flex: "1 1 auto",
+          marginTop: 20,
+          lineHeight: 1.75,
+        }}
+      >
         &ldquo;{item.quote}&rdquo;
       </blockquote>
 
-      <footer className="mt-6 border-t border-white/[0.06] pt-5">
-        <div className="flex items-center gap-3">
+      <footer
+        className="border-t border-white/[0.06]"
+        style={{ flex: "0 0 auto", marginTop: 24, paddingTop: 20 }}
+      >
+        <div className="flex items-center gap-3.5">
           <div
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 font-display text-sm font-bold text-[var(--text-primary)]"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/10 font-sans text-[13px] font-semibold tracking-[0.02em] text-[var(--text-primary)]"
             style={{
               background: `color-mix(in srgb, ${item.accent} 14%, var(--bg-primary))`,
+              lineHeight: 1,
             }}
           >
-            {item.initials}
+            <span className="block translate-y-px leading-none">{item.initials}</span>
           </div>
-          <div className="min-w-0">
-            <p className="truncate text-[15px] font-semibold text-[var(--text-primary)]">
+          <div className="min-w-0 text-left">
+            <p className="m-0 truncate text-[15px] font-semibold leading-[1.25] text-[var(--text-primary)]">
               {item.name}
             </p>
-            <p className="mt-0.5 text-[13px] leading-snug text-[var(--text-secondary)]">
+            <p className="m-0 mt-1 truncate text-[13px] leading-[1.3] text-[var(--text-secondary)]">
               {item.title} · {item.company}
             </p>
-            <p className="text-[12px] text-[var(--text-muted)]">{item.location}</p>
+            <p className="m-0 mt-1 text-[12px] leading-[1.3] text-[var(--text-muted)]">
+              {item.location}
+            </p>
           </div>
         </div>
       </footer>
@@ -139,97 +164,210 @@ function TestimonialCard({
 }
 
 export function TestimonialsSection() {
+  const viewportRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const dragRef = useRef({ active: false, startX: 0, scrollLeft: 0 });
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const dragRef = useRef({
+    active: false,
+    moved: false,
+    startX: 0,
+    originOffset: 0,
+  });
+  const wheelLockRef = useRef(false);
+  const activeRef = useRef(0);
+  const maxIndexRef = useRef(0);
+  const metricsRef = useRef({ step: 424, maxOffset: 0 });
 
-  const goTo = useCallback((index: number) => {
+  const [active, setActive] = useState(0);
+  const [step, setStep] = useState(424);
+  const [maxOffset, setMaxOffset] = useState(0);
+  const [maxIndex, setMaxIndex] = useState(0);
+  const [cardHeight, setCardHeight] = useState(340);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [instant, setInstant] = useState(false);
+
+  const measure = useCallback(() => {
+    const viewport = viewportRef.current;
     const track = trackRef.current;
-    if (!track) return;
-    const normalized = scrollTrackToIndex(track, index);
-    setActive(normalized);
+    if (!viewport || !track) return;
+
+    const cards = Array.from(track.querySelectorAll<HTMLElement>("[data-testimonial-card]"));
+    if (!cards.length) return;
+
+    // Measure natural content height, then equalize so footers line up.
+    cards.forEach((card) => {
+      card.style.height = "auto";
+    });
+    let tallest = 340;
+    for (const card of cards) {
+      tallest = Math.max(tallest, Math.ceil(card.getBoundingClientRect().height));
+    }
+    cards.forEach((card) => {
+      card.style.height = `${tallest}px`;
+    });
+    setCardHeight(tallest);
+
+    const cardWidth = cards[0].getBoundingClientRect().width;
+    const nextStep = cardWidth + GAP_PX;
+    const trackWidth =
+      cards.length * cardWidth + Math.max(0, cards.length - 1) * GAP_PX;
+    const styles = getComputedStyle(viewport);
+    const padX =
+      (Number.parseFloat(styles.paddingLeft) || 0) +
+      (Number.parseFloat(styles.paddingRight) || 0);
+    const innerWidth = Math.max(0, viewport.clientWidth - padX);
+    const nextMaxOffset = Math.max(0, trackWidth - innerWidth);
+    const nextMaxIndex =
+      nextMaxOffset <= 0 ? 0 : Math.ceil(nextMaxOffset / nextStep - 1e-6);
+
+    metricsRef.current = { step: nextStep, maxOffset: nextMaxOffset };
+    maxIndexRef.current = nextMaxIndex;
+    setStep(nextStep);
+    setMaxOffset(nextMaxOffset);
+    setMaxIndex(nextMaxIndex);
+
+    if (activeRef.current > nextMaxIndex) {
+      activeRef.current = nextMaxIndex;
+      setActive(nextMaxIndex);
+    }
   }, []);
 
+  useEffect(() => {
+    const id = window.requestAnimationFrame(() => measure());
+    const viewport = viewportRef.current;
+    const observer = viewport ? new ResizeObserver(() => measure()) : null;
+    if (viewport && observer) observer.observe(viewport);
+    window.addEventListener("resize", measure);
+    return () => {
+      window.cancelAnimationFrame(id);
+      observer?.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [measure]);
+
+  const clampIndex = useCallback((index: number) => {
+    const max = maxIndexRef.current;
+    if (max <= 0) return 0;
+    if (index < 0) return max;
+    if (index > max) return 0;
+    return index;
+  }, []);
+
+  const goTo = useCallback(
+    (index: number) => {
+      const next = clampIndex(index);
+      activeRef.current = next;
+      setDragOffset(0);
+      setActive(next);
+    },
+    [clampIndex],
+  );
+
+  const goNext = useCallback(() => goTo(activeRef.current + 1), [goTo]);
+  const goPrev = useCallback(() => goTo(activeRef.current - 1), [goTo]);
+
+  const offsetForIndex = useCallback(
+    (index: number) => Math.min(index * step, maxOffset),
+    [step, maxOffset],
+  );
+
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    const track = trackRef.current;
-    if (!track) return;
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    const viewport = viewportRef.current;
+    if (!viewport) return;
 
     dragRef.current = {
       active: true,
+      moved: false,
       startX: event.clientX,
-      scrollLeft: track.scrollLeft,
+      originOffset: dragOffset,
     };
-    track.setPointerCapture(event.pointerId);
+    viewport.setPointerCapture(event.pointerId);
     setPaused(true);
+    setInstant(true);
   };
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    const track = trackRef.current;
-    if (!track || !dragRef.current.active) return;
-
+    if (!dragRef.current.active) return;
     const delta = event.clientX - dragRef.current.startX;
-    track.scrollLeft = dragRef.current.scrollLeft - delta;
+    if (Math.abs(delta) > 6) dragRef.current.moved = true;
+    setDragOffset(dragRef.current.originOffset + delta);
   };
 
   const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
-    const track = trackRef.current;
-    if (!track || !dragRef.current.active) return;
+    if (!dragRef.current.active) return;
+    const viewport = viewportRef.current;
+    const didMove = dragRef.current.moved;
+    const delta = event.clientX - dragRef.current.startX;
 
     dragRef.current.active = false;
-    track.releasePointerCapture(event.pointerId);
+    dragRef.current.moved = false;
+
+    if (viewport?.hasPointerCapture(event.pointerId)) {
+      viewport.releasePointerCapture(event.pointerId);
+    }
+
+    setInstant(false);
+
+    if (!didMove) {
+      setDragOffset(0);
+      setPaused(false);
+      return;
+    }
+
+    const { step: s } = metricsRef.current;
+    const threshold = Math.min(80, s * 0.2);
+    if (delta <= -threshold) {
+      goTo(activeRef.current + 1);
+    } else if (delta >= threshold) {
+      goTo(activeRef.current - 1);
+    } else {
+      setDragOffset(0);
+    }
     setPaused(false);
   };
 
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
+    const viewport = viewportRef.current;
+    if (!viewport) return;
 
-    let frame = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const cards = getTestimonialCards(track);
-        const center = track.scrollLeft + track.clientWidth / 2;
-        let closest = 0;
-        let closestDistance = Infinity;
+    const onWheel = (event: WheelEvent) => {
+      const absX = Math.abs(event.deltaX);
+      const absY = Math.abs(event.deltaY);
+      const delta = absX > absY ? event.deltaX : event.deltaY;
+      if (delta === 0) return;
 
-        cards.forEach((card, index) => {
-          const cardCenter = card.offsetLeft + card.clientWidth / 2;
-          const distance = Math.abs(cardCenter - center);
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            closest = index;
-          }
-        });
+      event.preventDefault();
+      if (wheelLockRef.current) return;
 
-        setActive(closest);
-      });
+      wheelLockRef.current = true;
+      setPaused(true);
+
+      if (delta > 0) goTo(activeRef.current + 1);
+      else goTo(activeRef.current - 1);
+
+      window.setTimeout(() => {
+        wheelLockRef.current = false;
+        setPaused(false);
+      }, 560);
     };
 
-    track.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      track.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(frame);
-    };
-  }, []);
+    viewport.addEventListener("wheel", onWheel, { passive: false });
+    return () => viewport.removeEventListener("wheel", onWheel);
+  }, [goTo]);
 
   useEffect(() => {
     if (paused) return;
 
     const timer = window.setInterval(() => {
-      const track = trackRef.current;
-      if (!track) return;
-
-      setActive((current) => {
-        const next = (current + 1) % TESTIMONIALS.length;
-        const normalized = scrollTrackToIndex(track, next);
-        return normalized;
-      });
+      goTo(activeRef.current + 1);
     }, 6000);
 
     return () => window.clearInterval(timer);
-  }, [paused]);
+  }, [paused, goTo]);
+
+  const translateX = -offsetForIndex(active) + dragOffset;
+  const stopCount = maxIndex + 1;
 
   return (
     <section id="testimonials" className="section bg-[var(--bg-surface)]">
@@ -260,26 +398,34 @@ export function TestimonialsSection() {
         />
 
         <div
-          ref={trackRef}
+          ref={viewportRef}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={endDrag}
           onPointerCancel={endDrag}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => {
-            if (!dragRef.current.active) setPaused(false);
+            if (!dragRef.current.active) {
+              setDragOffset(0);
+              setPaused(false);
+            }
           }}
-          className="no-scrollbar flex w-full min-w-0 cursor-grab snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain scroll-smooth px-6 pb-2 active:cursor-grabbing md:gap-6 md:px-8 lg:px-[max(32px,calc((100vw-1200px)/2+32px))]"
-          style={{
-            WebkitOverflowScrolling: "touch",
-            scrollPaddingInline: "24px",
-            touchAction: "pan-x",
-          }}
+          className="relative w-full cursor-grab overflow-hidden px-6 pb-2 active:cursor-grabbing md:px-8 lg:px-[max(32px,calc((100vw-1200px)/2+32px))]"
+          style={{ touchAction: "none" }}
         >
-          {TESTIMONIALS.map((item) => (
-            <TestimonialCard key={item.name} item={item} />
-          ))}
-          <div className="w-4 shrink-0 sm:w-6" aria-hidden />
+          <div
+            ref={trackRef}
+            className="flex items-stretch will-change-transform"
+            style={{
+              gap: GAP_PX,
+              transform: `translate3d(${translateX}px, 0, 0)`,
+              transition: instant ? "none" : "transform 550ms cubic-bezier(0.25, 0.8, 0.25, 1)",
+            }}
+          >
+            {TESTIMONIALS.map((item) => (
+              <TestimonialCard key={item.name} item={item} height={cardHeight} />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -287,18 +433,18 @@ export function TestimonialsSection() {
         <button
           type="button"
           aria-label="Previous testimonial"
-          onClick={() => goTo(active - 1)}
+          onClick={goPrev}
           className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-[var(--text-secondary)] transition-colors hover:border-white/20 hover:text-[var(--text-primary)]"
         >
           ←
         </button>
 
         <div className="flex items-center gap-2">
-          {TESTIMONIALS.map((_, index) => (
+          {Array.from({ length: stopCount }).map((_, index) => (
             <button
               key={index}
               type="button"
-              aria-label={`Show testimonial ${index + 1}`}
+              aria-label={`Show testimonial set ${index + 1}`}
               aria-current={active === index}
               onClick={() => goTo(index)}
               className="relative flex h-2 items-center justify-center rounded-full transition-colors duration-200"
@@ -320,7 +466,7 @@ export function TestimonialsSection() {
         <button
           type="button"
           aria-label="Next testimonial"
-          onClick={() => goTo(active + 1)}
+          onClick={goNext}
           className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-[var(--text-secondary)] transition-colors hover:border-white/20 hover:text-[var(--text-primary)]"
         >
           →

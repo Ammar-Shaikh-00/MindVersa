@@ -33,7 +33,7 @@ export default function BlogIndex() {
           className="font-display"
           style={{
             fontSize: "clamp(44px, 5.2vw, 68px)",
-            fontWeight: 800,
+            fontWeight: 700,
             letterSpacing: "-2px",
             lineHeight: 1.05,
             marginTop: 14,

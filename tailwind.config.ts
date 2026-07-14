@@ -24,8 +24,8 @@ const config: Config = {
         "border-default": "rgba(255,255,255,0.10)",
       },
       fontFamily: {
-        sans: ["var(--font-dm-sans)", "ui-sans-serif", "system-ui"],
-        display: ["var(--font-syne)", "ui-sans-serif", "sans-serif"],
+        sans: ["var(--font-body)", "ui-sans-serif", "system-ui"],
+        display: ["var(--font-heading)", "ui-sans-serif", "sans-serif"],
       },
       borderRadius: {
         lg: "8px",

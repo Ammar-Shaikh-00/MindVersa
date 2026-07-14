@@ -74,7 +74,7 @@ export function MarqueeSection() {
         <span
           className="whitespace-nowrap pr-12"
           style={{
-            fontFamily: "var(--font-dm-sans), sans-serif",
+            fontFamily: "var(--font-body), sans-serif",
             fontWeight: 500,
             fontSize: 13,
             color: "var(--text-muted)",
@@ -87,7 +87,7 @@ export function MarqueeSection() {
           className="whitespace-nowrap pr-12"
           aria-hidden
           style={{
-            fontFamily: "var(--font-dm-sans), sans-serif",
+            fontFamily: "var(--font-body), sans-serif",
             fontWeight: 500,
             fontSize: 13,
             color: "var(--text-muted)",

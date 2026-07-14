@@ -12,7 +12,7 @@ function TagPill({ children, color }: { children: ReactNode; color: string }) {
         background: `${color}14`,
         border: `1px solid ${color}33`,
         color,
-        fontFamily: "var(--font-dm-sans), sans-serif",
+        fontFamily: "var(--font-body), sans-serif",
         fontWeight: 600,
         fontSize: 10,
         letterSpacing: 2,
@@ -33,7 +33,7 @@ function Roi({ children, color }: { children: ReactNode; color: string }) {
         background: `${color}14`,
         border: `1px solid ${color}33`,
         color,
-        fontFamily: "var(--font-dm-sans), sans-serif",
+        fontFamily: "var(--font-body), sans-serif",
         fontWeight: 500,
         fontSize: 12,
       }}

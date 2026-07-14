@@ -14,9 +14,9 @@ function getSceneLayout(width: number) {
     return { camZ: 6.4, scale: 1.42, groupX: 0, groupY: 0.2, fov: 58, particleSize: 0.055 };
   }
   if (width < 1024) {
-    return { camZ: 5.5, scale: 1.58, groupX: 0.3, groupY: 0, fov: 57, particleSize: 0.062 };
+    return { camZ: 5.5, scale: 1.58, groupX: 0.85, groupY: 0, fov: 57, particleSize: 0.062 };
   }
-  return { camZ: 4.85, scale: 1.75, groupX: 0.65, groupY: -0.1, fov: 56, particleSize: 0.072 };
+  return { camZ: 4.85, scale: 1.75, groupX: 1.35, groupY: -0.15, fov: 56, particleSize: 0.072 };
 }
 
 function applySceneLayout(
@@ -156,9 +156,9 @@ export default function SplineHero() {
     coreGroup.add(sphereMesh);
 
     /* layered wireframe icosahedra */
-    const ico1 = makeWireIco(0.86, 1, ACCENT_CYAN, 0.24);
-    const ico2 = makeWireIco(1.1, 2, ACCENT_VIOLET, 0.15);
-    const ico3 = makeWireIco(1.36, 3, ACCENT_CYAN, 0.08);
+    const ico1 = makeWireIco(0.86, 1, ACCENT_CYAN, 0.16);
+    const ico2 = makeWireIco(1.1, 2, ACCENT_VIOLET, 0.1);
+    const ico3 = makeWireIco(1.36, 3, ACCENT_CYAN, 0.05);
     coreGroup.add(ico1, ico2, ico3);
 
     /* orbit rings */
@@ -211,14 +211,14 @@ export default function SplineHero() {
       blending: THREE.AdditiveBlending,
       vertexColors: true,
       sizeAttenuation: true,
-      opacity: 0.82,
+      opacity: 0.7,
     });
     const particleMesh = new THREE.Points(particleGeo, particleMat);
     scene.add(particleMesh);
 
     /* scene-level decorative ring (large, flat) */
     const bigRingGeo = new THREE.RingGeometry(4.2, 4.24, 200);
-    const bigRingMat = new THREE.MeshBasicMaterial({ color: ACCENT_CYAN, transparent: true, opacity: 0.14, side: THREE.DoubleSide });
+    const bigRingMat = new THREE.MeshBasicMaterial({ color: ACCENT_CYAN, transparent: true, opacity: 0.06, side: THREE.DoubleSide });
     const bigRingMesh = new THREE.Mesh(bigRingGeo, bigRingMat);
     bigRingMesh.rotation.x = Math.PI / 2.4;
     scene.add(bigRingMesh);

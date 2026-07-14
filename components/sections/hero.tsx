@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { HeroNetworkAccents } from "@/components/hero-network-accents";
 
 const SplineHero = dynamic(() => import("@/components/spline-hero"), {
   ssr: false,
@@ -68,11 +69,29 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative overflow-hidden"
+      className="hero-container relative overflow-hidden"
       style={{ background: "#05070F", minHeight: "100svh" }}
     >
-      <div className="hero-blob" style={{ width: 500, height: 500, top: "10%", left: "60%", background: "rgba(0,229,255,0.06)" }} />
-      <div className="hero-blob" style={{ width: 400, height: 400, bottom: "20%", right: "10%", background: "rgba(123,97,255,0.05)" }} />
+      <div
+        className="hero-blob"
+        style={{
+          width: 620,
+          height: 620,
+          top: "8%",
+          left: "55%",
+          background: "radial-gradient(circle, rgba(0,229,255,0.14) 0%, rgba(0,229,255,0) 70%)",
+        }}
+      />
+      <div
+        className="hero-blob"
+        style={{
+          width: 520,
+          height: 520,
+          bottom: "12%",
+          right: "4%",
+          background: "radial-gradient(circle, rgba(123,97,255,0.11) 0%, rgba(123,97,255,0) 72%)",
+        }}
+      />
       <div className="hero-dot-grid" />
 
       {showSpline && (
@@ -81,8 +100,20 @@ export function HeroSection() {
         </Suspense>
       )}
 
+      <HeroNetworkAccents />
+
       <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[1200px] items-center px-4 sm:px-5 md:px-6">
-        <div className="mx-auto w-full max-w-[760px] pt-[100px] pb-10 text-center sm:pt-[120px]">
+        <div className="relative mx-auto w-full max-w-[760px] pt-[100px] pb-10 text-center sm:pt-[120px]">
+          {/* Soft scrim so globe lines don't cut through copy */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-[8%] z-0 h-[78%] w-[min(100%,720px)] -translate-x-1/2"
+            style={{
+              background:
+                "radial-gradient(ellipse 58% 60% at 50% 42%, rgba(5,7,15,0.9) 0%, rgba(5,7,15,0.55) 48%, rgba(5,7,15,0) 78%)",
+            }}
+          />
+          <div className="relative z-[1]">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -100,7 +131,7 @@ export function HeroSection() {
           </motion.div>
 
           <h1
-            className="mx-auto w-full max-w-full text-center font-display font-extrabold"
+            className="mx-auto w-full max-w-full text-center font-display font-bold"
             style={{
               fontSize: "clamp(26px, 7.2vw, 68px)",
               lineHeight: 1.15,
@@ -112,7 +143,10 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.2 }}
               className="block whitespace-nowrap text-center"
-              style={{ color: "var(--text-primary)" }}
+              style={{
+                color: "var(--text-primary)",
+                textShadow: "0 0 40px rgba(5,7,15,0.85)",
+              }}
             >
               AI Systems That
             </motion.span>
@@ -127,6 +161,7 @@ export function HeroSection() {
                 backgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 color: "transparent",
+                filter: "drop-shadow(0 0 28px rgba(5,7,15,0.9))",
               }}
             >
               Deliver Results.
@@ -139,12 +174,13 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.55 }}
             className="mx-auto mt-5 px-1 sm:mt-6"
             style={{
-              fontFamily: "var(--font-dm-sans), sans-serif",
+              fontFamily: "var(--font-body), sans-serif",
               fontWeight: 400,
               fontSize: "clamp(15px, 3.6vw, 21px)",
               lineHeight: 1.7,
-              color: "var(--text-secondary)",
+              color: "#B7C0D4",
               maxWidth: 640,
+              textShadow: "0 1px 18px rgba(5,7,15,0.95), 0 0 2px rgba(5,7,15,0.9)",
             }}
           >
             End-to-end AI software — chatbots, automation, data platforms, and custom systems built by engineers for measurable business outcomes.
@@ -189,7 +225,7 @@ export function HeroSection() {
                   className="hero-stat flex flex-col items-center justify-start px-3 py-1 text-center sm:px-4"
                 >
                   <div
-                    className="font-display font-extrabold tabular-nums"
+                    className="font-display font-bold tabular-nums"
                     style={{
                       fontSize: "clamp(28px, 5vw, 44px)",
                       color: "var(--accent-cyan)",
@@ -209,6 +245,7 @@ export function HeroSection() {
               ))}
             </div>
           </motion.div>
+          </div>
         </div>
       </div>
 

@@ -65,54 +65,70 @@ export function ContactSection() {
   return (
     <section id="contact" className="section" style={{ background: "var(--bg-primary)" }}>
       <div className="container-x">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[40fr_60fr] lg:gap-10">
+        <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-[38fr_62fr] lg:gap-10">
           {/* LEFT */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5 }}
-            className="section-header section-header--left rounded-3xl border p-5 sm:p-7 md:p-9"
+            className="flex h-full min-h-0 flex-col rounded-3xl border p-5 sm:p-7 md:p-8"
             style={{
               borderColor: "rgba(255,255,255,0.08)",
-              background: "linear-gradient(180deg, rgba(15,19,32,0.82), rgba(15,19,32,0.55))",
+              background: "linear-gradient(180deg, rgba(15,19,32,0.92), rgba(15,19,32,0.72))",
             }}
           >
             <span className="label-eyebrow">CONTACT</span>
             <h2
-              className="font-display font-extrabold"
+              className="font-display font-bold"
               style={{
-                fontSize: "clamp(28px, 3.2vw, 42px)",
-                lineHeight: 1.15,
+                fontSize: "clamp(28px, 3.2vw, 40px)",
+                lineHeight: 1.12,
                 letterSpacing: "-1.2px",
                 color: "var(--text-primary)",
-                marginBottom: 16,
+                marginTop: 10,
+                marginBottom: 14,
               }}
             >
               <span className="block">Let&apos;s Build Your</span>
               <span className="block">AI Solution</span>
             </h2>
-            <p className="section-subtitle" style={{ maxWidth: 440 }}>
+            <p
+              className="text-[15px] leading-[1.65]"
+              style={{ color: "var(--text-secondary)", maxWidth: 420 }}
+            >
               Tell us your problem. We&apos;ll tell you if AI can solve it — and exactly how we&apos;d build it.
             </p>
 
-            <div className="mt-8 flex items-center gap-2 text-[14px]">
-              <span className="pulse-dot inline-block h-2 w-2 rounded-full" style={{ background: "var(--accent-green)" }} />
-              <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>
-                Reply within 2 hours on business days
-              </span>
+            <div
+              className="mt-7 rounded-2xl border px-4 py-3.5"
+              style={{
+                borderColor: "rgba(255,255,255,0.06)",
+                background: "rgba(5,7,15,0.35)",
+              }}
+            >
+              <div className="flex items-center gap-2 text-[14px]">
+                <span
+                  className="pulse-dot inline-block h-2 w-2 shrink-0 rounded-full"
+                  style={{ background: "var(--accent-green)" }}
+                />
+                <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>
+                  Reply within 2 hours on business days
+                </span>
+              </div>
+              <p className="mt-1.5 pl-4 text-[13px]" style={{ color: "var(--text-secondary)" }}>
+                Available US · UK · EU · AUS · ME
+              </p>
             </div>
-            <p className="mt-2 text-[13px]" style={{ color: "var(--text-secondary)" }}>
-              Available US · UK · EU · AUS · ME
-            </p>
 
-            <div className="mt-7 space-y-3 text-[15px]">
+            <div className="mt-6 space-y-2.5 text-[15px]">
               <a
                 href={CONTACT_MAILTO}
-                className="block transition-colors hover:text-accent-cyan"
+                className="inline-flex items-center gap-2 transition-colors hover:text-accent-cyan"
                 style={{ color: "var(--text-primary)", fontWeight: 500 }}
               >
-                ✉  {CONTACT_EMAIL}
+                <span aria-hidden>✉</span>
+                {CONTACT_EMAIL}
               </a>
               <a
                 href="https://calendly.com/"
@@ -124,13 +140,43 @@ export function ContactSection() {
               </a>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-2.5">
+            <div
+              className="mt-8 space-y-3 text-[14px] leading-[1.55]"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              <p style={{ color: "var(--text-primary)", fontWeight: 600 }}>What happens next</p>
+              <ol className="m-0 list-none space-y-2.5 p-0">
+                {[
+                  "We review your brief within 2 business hours",
+                  "You get a clear yes/no on AI feasibility",
+                  "If it fits, we send a scoped next-step plan",
+                ].map((step, i) => (
+                  <li key={step} className="flex gap-3">
+                    <span
+                      className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold"
+                      style={{
+                        background: "rgba(0,229,255,0.1)",
+                        color: "var(--accent-cyan)",
+                      }}
+                    >
+                      {i + 1}
+                    </span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div
+              className="mt-auto flex flex-wrap gap-2 border-t pt-6"
+              style={{ borderColor: "rgba(255,255,255,0.06)" }}
+            >
               {["LinkedIn", "GitHub", "Twitter / X", "Upwork"].map((s) => (
                 <a
                   key={s}
                   href="#"
                   aria-label={s}
-                  className="rounded-full px-4 py-2 text-[12px] transition-all duration-200 hover:border-accent-cyan hover:text-accent-cyan"
+                  className="rounded-full px-3.5 py-2 text-[12px] transition-all duration-200 hover:border-accent-cyan hover:text-accent-cyan"
                   style={{
                     background: "var(--bg-elevated)",
                     border: "1px solid var(--border-subtle)",
@@ -151,7 +197,7 @@ export function ContactSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, delay: 0.08 }}
-            className="space-y-4 rounded-3xl border p-5 sm:p-6 md:p-8"
+            className="flex h-full flex-col space-y-4 rounded-3xl border p-5 sm:p-6 md:p-8"
             style={{
               borderColor: "rgba(255,255,255,0.08)",
               background: "linear-gradient(180deg, rgba(15,19,32,0.9), rgba(10,13,26,0.82))",

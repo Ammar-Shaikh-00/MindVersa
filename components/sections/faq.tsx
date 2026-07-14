@@ -43,7 +43,7 @@ export function FaqSection() {
                   className="faq-question-btn flex w-full items-center justify-between gap-3 text-left transition-colors sm:gap-4"
                   style={{
                     padding: "18px 16px",
-                    fontFamily: "var(--font-syne), sans-serif",
+                    fontFamily: "var(--font-heading), sans-serif",
                     fontWeight: 600,
                     fontSize: 16,
                     color: isOpen ? "var(--accent-cyan)" : "var(--text-primary)",

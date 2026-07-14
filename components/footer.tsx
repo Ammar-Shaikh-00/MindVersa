@@ -39,7 +39,7 @@ function FooterColumn({
     <div>
       <p
         className="text-[12px] font-semibold uppercase tracking-[2px]"
-        style={{ color: "var(--text-muted)" }}
+        style={{ color: "var(--text-primary)" }}
       >
         {title}
       </p>
@@ -97,7 +97,7 @@ export function Footer() {
             >
               {CONTACT_EMAIL}
             </a>
-            <p className="mt-2 text-[13px]" style={{ color: "var(--text-muted)" }}>
+            <p className="mt-2 text-[13px]" style={{ color: "var(--text-secondary)" }}>
               US · UK · EU · AUS · Middle East
             </p>
           </div>
@@ -114,10 +114,10 @@ export function Footer() {
           className="mt-12 flex flex-col gap-4 border-t pt-8 md:mt-14 md:flex-row md:items-center md:justify-between"
           style={{ borderColor: "rgba(255,255,255,0.06)" }}
         >
-          <p className="text-[13px]" style={{ color: "var(--text-muted)" }}>
+          <p className="text-[13px]" style={{ color: "var(--text-secondary)" }}>
             © {year} MindVersa. All rights reserved.
           </p>
-          <p className="text-[13px]" style={{ color: "var(--text-muted)" }}>
+          <p className="text-[13px]" style={{ color: "var(--text-secondary)" }}>
             Built for teams that need AI shipped, not slideware.
           </p>
         </div>

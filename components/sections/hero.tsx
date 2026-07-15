@@ -11,11 +11,11 @@ const SplineHero = dynamic(() => import("@/components/spline-hero"), {
   loading: () => null,
 });
 
-const STATS: { value: string; target: number; suffix: string; label: string }[] = [
-  { value: "50+", target: 50, suffix: "+", label: "Models Deployed" },
-  { value: "10M+", target: 10, suffix: "M+", label: "Data Points Processed" },
-  { value: "99%", target: 99, suffix: "%", label: "Average Accuracy" },
-  { value: "5d", target: 5, suffix: "d", label: "Average Delivery" },
+const STATS: { target: number; suffix: string; label: string }[] = [
+  { target: 50, suffix: "+", label: "Models Deployed" },
+  { target: 10, suffix: "M+", label: "Data Points Processed" },
+  { target: 99, suffix: "%", label: "Average Accuracy" },
+  { target: 5, suffix: "d", label: "Average Delivery" },
 ];
 
 function HeadlineWords({
@@ -62,7 +62,6 @@ function HeadlineWords({
 function CountUp({ target, suffix, delayMs }: { target: number; suffix: string; delayMs: number }) {
   const ref = useRef<HTMLSpanElement | null>(null);
   useEffect(() => {
-    let raf = 0;
     let cleanup = () => {};
     let cancelled = false;
     const timer = window.setTimeout(async () => {
@@ -82,7 +81,6 @@ function CountUp({ target, suffix, delayMs }: { target: number; suffix: string; 
     return () => {
       cancelled = true;
       window.clearTimeout(timer);
-      cancelAnimationFrame(raf);
       cleanup();
     };
   }, [target, suffix, delayMs]);

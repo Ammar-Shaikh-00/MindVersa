@@ -1,3 +1,64 @@
+type OrbTone = "cyan" | "violet";
+
+function NetworkOrb({
+  cx,
+  cy,
+  r = 7,
+  tone = "cyan",
+  pulse = false,
+  delay = "0s",
+}: {
+  cx: number;
+  cy: number;
+  r?: number;
+  tone?: OrbTone;
+  pulse?: boolean;
+  delay?: string;
+}) {
+  const fill = tone === "cyan" ? "url(#orb-core-cyan)" : "url(#orb-core-violet)";
+  const glow = tone === "cyan" ? "url(#orb-aura-cyan)" : "url(#orb-aura-violet)";
+  const rim = tone === "cyan" ? "rgba(180, 245, 255, 0.55)" : "rgba(210, 195, 255, 0.5)";
+
+  return (
+    <g transform={`translate(${cx} ${cy})`}>
+      <g
+        className={pulse ? "network-orb network-orb-pulse" : "network-orb"}
+        style={pulse ? { animationDelay: delay } : undefined}
+      >
+        {/* Soft ambient aura */}
+        <circle r={r * 2.4} fill={glow} opacity="0.9" />
+        {/* Depth shadow under the orb */}
+        <ellipse
+          cx={0.4}
+          cy={r * 0.55}
+          rx={r * 0.85}
+          ry={r * 0.35}
+          fill="rgba(0,0,0,0.45)"
+          filter="url(#orb-blur-soft)"
+        />
+        {/* Sphere body */}
+        <circle r={r} fill={fill} />
+        {/* Rim light */}
+        <circle r={r * 0.92} fill="none" stroke={rim} strokeWidth={0.6} opacity="0.65" />
+        {/* Specular highlight */}
+        <circle
+          cx={-r * 0.28}
+          cy={-r * 0.32}
+          r={r * 0.32}
+          fill="url(#orb-highlight)"
+        />
+        {/* Tiny glass chip */}
+        <circle
+          cx={-r * 0.42}
+          cy={-r * 0.45}
+          r={r * 0.12}
+          fill="rgba(255,255,255,0.9)"
+        />
+      </g>
+    </g>
+  );
+}
+
 /** Decorative SVG neon network accents for the hero — CSS/SVG only, no JS. */
 export function HeroNetworkAccents() {
   return (
@@ -22,7 +83,38 @@ export function HeroNetworkAccents() {
             <stop offset="50%" stopColor="#7B61FF" stopOpacity="0.9" />
             <stop offset="100%" stopColor="#00E5FF" stopOpacity="0" />
           </linearGradient>
-          {/* Keep pulses readable without lighting up the whole hero */}
+
+          <radialGradient id="orb-core-cyan" cx="32%" cy="28%" r="72%">
+            <stop offset="0%" stopColor="#E7FFFF" />
+            <stop offset="28%" stopColor="#5CF0FF" />
+            <stop offset="62%" stopColor="#00B8D4" />
+            <stop offset="100%" stopColor="#045A6E" />
+          </radialGradient>
+          <radialGradient id="orb-core-violet" cx="32%" cy="28%" r="72%">
+            <stop offset="0%" stopColor="#F3ECFF" />
+            <stop offset="28%" stopColor="#B39BFF" />
+            <stop offset="62%" stopColor="#7B61FF" />
+            <stop offset="100%" stopColor="#2A1A6E" />
+          </radialGradient>
+          <radialGradient id="orb-aura-cyan" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#00E5FF" stopOpacity="0.55" />
+            <stop offset="45%" stopColor="#00E5FF" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="#00E5FF" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="orb-aura-violet" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#7B61FF" stopOpacity="0.5" />
+            <stop offset="45%" stopColor="#7B61FF" stopOpacity="0.16" />
+            <stop offset="100%" stopColor="#7B61FF" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="orb-highlight" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.95" />
+            <stop offset="40%" stopColor="#FFFFFF" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+          </radialGradient>
+          <filter id="orb-blur-soft" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1.4" />
+          </filter>
+
           <radialGradient id="hero-edge-fade" cx="50%" cy="45%" r="55%">
             <stop offset="0%" stopColor="#fff" stopOpacity="0.15" />
             <stop offset="55%" stopColor="#fff" stopOpacity="0.55" />
@@ -34,7 +126,6 @@ export function HeroNetworkAccents() {
         </defs>
 
         <g mask="url(#hero-network-mask)">
-          {/* Soft base lattice (static) — edges + corners, fades under center copy */}
           <g className="hero-network-base" fill="none" strokeWidth="1.1">
             <path d="M40 120 L180 200 L80 340 L220 420" stroke="rgba(0,229,255,0.22)" />
             <path d="M60 520 L200 460 L140 640 L280 700" stroke="rgba(123,97,255,0.18)" />
@@ -46,7 +137,6 @@ export function HeroNetworkAccents() {
             <path d="M180 200 L120 400 L200 460" stroke="rgba(123,97,255,0.14)" />
           </g>
 
-          {/* Traveling neon pulses */}
           <g className="hero-neon-pulses" fill="none" strokeWidth="2" strokeLinecap="round">
             <path
               className="hero-neon-pulse"
@@ -134,15 +224,14 @@ export function HeroNetworkAccents() {
             </path>
           </g>
 
-          {/* Network nodes */}
           <g className="hero-network-nodes">
-            <circle className="network-node network-node-glow" cx="880" cy="180" r="3.5" fill="#00E5FF" opacity="0.85" style={{ animationDelay: "0s" }} />
-            <circle className="network-node network-node-glow" cx="1100" cy="340" r="3" fill="#7B61FF" opacity="0.8" style={{ animationDelay: "1s" }} />
-            <circle className="network-node network-node-glow" cx="180" cy="200" r="3.5" fill="#00E5FF" opacity="0.8" style={{ animationDelay: "2s" }} />
-            <circle className="network-node network-node-glow" cx="940" cy="550" r="3" fill="#7B61FF" opacity="0.75" style={{ animationDelay: "1.5s" }} />
-            <circle className="network-node" cx="1040" cy="120" r="2.5" fill="rgba(0,229,255,0.55)" />
-            <circle className="network-node" cx="220" cy="420" r="2.5" fill="rgba(123,97,255,0.5)" />
-            <circle className="network-node" cx="1160" cy="450" r="2" fill="rgba(0,229,255,0.45)" />
+            <NetworkOrb cx={880} cy={180} r={8} tone="cyan" pulse delay="0s" />
+            <NetworkOrb cx={1100} cy={340} r={7} tone="violet" pulse delay="1s" />
+            <NetworkOrb cx={180} cy={200} r={8} tone="cyan" pulse delay="2s" />
+            <NetworkOrb cx={940} cy={550} r={7.5} tone="violet" pulse delay="1.5s" />
+            <NetworkOrb cx={1040} cy={120} r={5} tone="cyan" />
+            <NetworkOrb cx={220} cy={420} r={5} tone="violet" />
+            <NetworkOrb cx={1160} cy={450} r={4.5} tone="cyan" />
           </g>
         </g>
       </svg>

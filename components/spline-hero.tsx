@@ -81,6 +81,64 @@ function makeCircleTexture(size = 64): THREE.Texture {
   return new THREE.CanvasTexture(canvas);
 }
 
+/** Soft glass orb sprite — avoids flat solid circles */
+function makeOrbTexture(hex: number, size = 128): THREE.Texture {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext("2d")!;
+  const c = new THREE.Color(hex);
+  const rgb = `${Math.round(c.r * 255)},${Math.round(c.g * 255)},${Math.round(c.b * 255)}`;
+  const mid = size / 2;
+
+  // Outer soft aura
+  const aura = ctx.createRadialGradient(mid, mid, size * 0.12, mid, mid, size * 0.5);
+  aura.addColorStop(0, `rgba(${rgb},0.55)`);
+  aura.addColorStop(0.45, `rgba(${rgb},0.18)`);
+  aura.addColorStop(1, `rgba(${rgb},0)`);
+  ctx.fillStyle = aura;
+  ctx.fillRect(0, 0, size, size);
+
+  // Sphere body
+  const bodyR = size * 0.22;
+  const body = ctx.createRadialGradient(
+    mid - bodyR * 0.35,
+    mid - bodyR * 0.4,
+    bodyR * 0.05,
+    mid,
+    mid,
+    bodyR,
+  );
+  body.addColorStop(0, "#ffffff");
+  body.addColorStop(0.22, `rgba(${rgb},1)`);
+  body.addColorStop(0.65, `rgba(${Math.round(c.r * 140)},${Math.round(c.g * 140)},${Math.round(c.b * 160)},0.95)`);
+  body.addColorStop(1, `rgba(${Math.round(c.r * 40)},${Math.round(c.g * 40)},${Math.round(c.b * 70)},0.15)`);
+  ctx.beginPath();
+  ctx.arc(mid, mid, bodyR, 0, Math.PI * 2);
+  ctx.fillStyle = body;
+  ctx.fill();
+
+  // Specular chip
+  const spec = ctx.createRadialGradient(
+    mid - bodyR * 0.38,
+    mid - bodyR * 0.42,
+    0,
+    mid - bodyR * 0.38,
+    mid - bodyR * 0.42,
+    bodyR * 0.35,
+  );
+  spec.addColorStop(0, "rgba(255,255,255,0.95)");
+  spec.addColorStop(0.4, "rgba(255,255,255,0.35)");
+  spec.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.beginPath();
+  ctx.arc(mid - bodyR * 0.35, mid - bodyR * 0.4, bodyR * 0.35, 0, Math.PI * 2);
+  ctx.fillStyle = spec;
+  ctx.fill();
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.needsUpdate = true;
+  return tex;
+}
+
 /* ─── wireframe icosahedron helper ───────────────────────────────────────── */
 function makeWireIco(radius: number, detail: number, color: THREE.Color, opacity: number) {
   const geo = new THREE.IcosahedronGeometry(radius, detail);
@@ -167,22 +225,25 @@ export default function SplineHero() {
     const ring3 = makeTorus(2.92, 0.0035, ACCENT_CYAN, 0.32, Math.PI / 1.6, Math.PI / 3);
     coreGroup.add(ring1, ring2, ring3);
 
-    /* orbiting satellite dots */
-    type Sat = { mesh: THREE.Mesh; speed: number; phase: number; tilt: number; dist: number };
+    /* orbiting satellite orbs — soft glowing sprites (not flat mesh discs) */
+    type Sat = { sprite: THREE.Sprite; speed: number; phase: number; tilt: number; dist: number };
     const sats: Sat[] = [];
+    const orbTexCyan = makeOrbTexture(0x00e5ff);
+    const orbTexViolet = makeOrbTexture(0x7b61ff);
     [0.0055, 0.0038, 0.0072, 0.0048, 0.0031, 0.0062].forEach((speed, i) => {
-      const geo = new THREE.SphereGeometry(0.036 + i * 0.005, 10, 10);
       const isViolet = i % 2 === 1;
-      const mat = new THREE.MeshStandardMaterial({
-        color: isViolet ? ACCENT_VIOLET : ACCENT_CYAN,
-        emissive: isViolet ? ACCENT_VIOLET : ACCENT_CYAN,
-        emissiveIntensity: 1.2,
-        roughness: 0.1,
-        metalness: 0.8,
+      const mat = new THREE.SpriteMaterial({
+        map: isViolet ? orbTexViolet : orbTexCyan,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        opacity: 0.95,
       });
-      const mesh = new THREE.Mesh(geo, mat);
-      coreGroup.add(mesh);
-      sats.push({ mesh, speed, phase: i * 1.05, tilt: 0.3 + i * 0.22, dist: 1.88 + i * 0.22 });
+      const sprite = new THREE.Sprite(mat);
+      const scale = 0.22 + i * 0.018;
+      sprite.scale.set(scale, scale, 1);
+      coreGroup.add(sprite);
+      sats.push({ sprite, speed, phase: i * 1.05, tilt: 0.3 + i * 0.22, dist: 1.88 + i * 0.22 });
     });
 
     /* network line lattice on icosahedron surface */
@@ -286,11 +347,15 @@ export default function SplineHero() {
       /* satellites */
       sats.forEach((s) => {
         const angle = t * s.speed + s.phase;
-        s.mesh.position.set(
+        s.sprite.position.set(
           Math.cos(angle) * s.dist,
           Math.sin(angle * 1.3) * s.tilt,
           Math.sin(angle) * s.dist,
         );
+        if (!s.sprite.userData.baseScale) s.sprite.userData.baseScale = s.sprite.scale.x;
+        const b = s.sprite.userData.baseScale as number;
+        const pulse = 1 + Math.sin(t * 0.04 + s.phase) * 0.08;
+        s.sprite.scale.set(b * pulse, b * pulse, 1);
       });
 
       /* pulsing emissive on core sphere */
@@ -319,6 +384,8 @@ export default function SplineHero() {
       window.removeEventListener("pointermove", onPointerMove);
       renderer.dispose();
       dotTexture.dispose();
+      orbTexCyan.dispose();
+      orbTexViolet.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
     };
   }, []);

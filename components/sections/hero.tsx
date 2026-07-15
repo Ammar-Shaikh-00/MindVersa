@@ -18,6 +18,47 @@ const STATS: { value: string; target: number; suffix: string; label: string }[] 
   { value: "5d", target: 5, suffix: "d", label: "Average Delivery" },
 ];
 
+function HeadlineWords({
+  text,
+  className,
+  wordClassName,
+  style,
+  delay = 0,
+}: {
+  text: string;
+  className?: string;
+  wordClassName?: string;
+  style?: React.CSSProperties;
+  delay?: number;
+}) {
+  const words = text.split(" ");
+
+  return (
+    <span className={className} style={style} aria-label={text}>
+      {words.map((word, i) => (
+        <span
+          key={`${word}-${i}`}
+          className="hero-word-mask inline-block align-bottom"
+        >
+          <motion.span
+            className={`hero-word inline-block will-change-transform ${wordClassName ?? ""}`}
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: "0%", opacity: 1 }}
+            transition={{
+              duration: 0.85,
+              delay: delay + i * 0.14,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+          >
+            {word}
+            {i < words.length - 1 ? "\u00A0" : ""}
+          </motion.span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
 function CountUp({ target, suffix, delayMs }: { target: number; suffix: string; delayMs: number }) {
   const ref = useRef<HTMLSpanElement | null>(null);
   useEffect(() => {
@@ -138,34 +179,24 @@ export function HeroSection() {
               letterSpacing: "-0.035em",
             }}
           >
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.2 }}
+            <HeadlineWords
+              text="AI Systems That"
+              delay={0.25}
               className="block whitespace-nowrap text-center"
               style={{
                 color: "var(--text-primary)",
                 textShadow: "0 0 40px rgba(5,7,15,0.85)",
               }}
-            >
-              AI Systems That
-            </motion.span>
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.4 }}
+            />
+            <HeadlineWords
+              text="Deliver Results."
+              delay={0.7}
               className="block whitespace-nowrap text-center"
+              wordClassName="hero-heading-shimmer"
               style={{
-                background: "linear-gradient(135deg, #00E5FF 0%, #7B61FF 100%)",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                color: "transparent",
                 filter: "drop-shadow(0 0 28px rgba(5,7,15,0.9))",
               }}
-            >
-              Deliver Results.
-            </motion.span>
+            />
           </h1>
 
           <motion.p

@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 type Point = { x: number; y: number };
 
-const CHAIN_LENGTH = 14;
-const SEGMENT_LERP = 0.34;
+const CHAIN_LENGTH = 26;
+const SEGMENT_LERP = 0.24;
 
 export function CustomCursor() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -70,20 +70,20 @@ export function CustomCursor() {
 
       const gradient = ctx.createLinearGradient(tail.x, tail.y, head.x, head.y);
       gradient.addColorStop(0, "rgba(0, 229, 255, 0)");
-      gradient.addColorStop(0.45, "rgba(0, 229, 255, 0.04)");
-      gradient.addColorStop(0.8, "rgba(123, 97, 255, 0.14)");
-      gradient.addColorStop(1, "rgba(0, 229, 255, 0.22)");
+      gradient.addColorStop(0.3, "rgba(0, 229, 255, 0.06)");
+      gradient.addColorStop(0.65, "rgba(123, 97, 255, 0.24)");
+      gradient.addColorStop(1, "rgba(0, 229, 255, 0.38)");
 
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       ctx.strokeStyle = gradient;
-      ctx.lineWidth = 2.5;
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = "rgba(0, 229, 255, 0.18)";
+      ctx.lineWidth = 5;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = "rgba(0, 229, 255, 0.32)";
       ctx.stroke();
 
       ctx.shadowBlur = 0;
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1.5;
       ctx.strokeStyle = gradient;
       ctx.stroke();
     };

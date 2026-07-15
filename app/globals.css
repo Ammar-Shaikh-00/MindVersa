@@ -586,6 +586,52 @@ h6 {
   }
 }
 
+/* Hero heading word-reveal clip + shimmer */
+.hero-word-mask {
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+  vertical-align: bottom;
+}
+
+.hero-heading-shimmer {
+  background: linear-gradient(
+    110deg,
+    #00e5ff 0%,
+    #7b61ff 35%,
+    #b8f4ff 50%,
+    #7b61ff 65%,
+    #00e5ff 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-heading-shimmer {
+    animation: hero-heading-shimmer 5.5s ease-in-out 1.6s infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-word-mask {
+    overflow: visible;
+  }
+}
+
+@keyframes hero-heading-shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(-50%) translateY(0); }
   50%       { transform: translateY(-50%) translateY(-20px); }

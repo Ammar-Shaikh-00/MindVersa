@@ -19,7 +19,6 @@ const COL_SERVICES = [
 const COL_CONNECT = [
   { href: "https://www.linkedin.com/", label: "LinkedIn", external: true },
   { href: "https://github.com/", label: "GitHub", external: true },
-  { href: "https://x.com/", label: "Twitter / X", external: true },
   { href: "https://www.upwork.com/", label: "Upwork", external: true },
 ];
 

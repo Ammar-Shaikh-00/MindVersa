@@ -168,10 +168,10 @@ export function ContactSection() {
             </div>
 
             <div
-              className="mt-auto flex flex-wrap gap-2 border-t pt-6"
+              className="mt-auto flex flex-wrap items-center justify-center gap-2.5 border-t pt-6"
               style={{ borderColor: "rgba(255,255,255,0.06)" }}
             >
-              {["LinkedIn", "GitHub", "Twitter / X", "Upwork"].map((s) => (
+              {["LinkedIn", "GitHub", "Upwork"].map((s) => (
                 <a
                   key={s}
                   href="#"

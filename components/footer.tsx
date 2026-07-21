@@ -50,16 +50,14 @@ function FooterColumn({
                 href={item.href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="text-[15px] leading-snug transition-colors duration-150 hover:text-[var(--text-primary)]"
-                style={{ color: "var(--text-secondary)" }}
+                className="text-[15px] leading-snug text-[var(--text-secondary)] transition-colors duration-200 hover:text-[var(--accent-cyan)]"
               >
                 {item.label}
               </a>
             ) : (
               <Link
                 href={item.href}
-                className="text-[15px] leading-snug transition-colors duration-150 hover:text-[var(--text-primary)]"
-                style={{ color: "var(--text-secondary)" }}
+                className="text-[15px] leading-snug text-[var(--text-secondary)] transition-colors duration-200 hover:text-[var(--accent-cyan)]"
               >
                 {item.label}
               </Link>

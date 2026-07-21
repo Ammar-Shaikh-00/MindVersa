@@ -130,14 +130,6 @@ export function ContactSection() {
                 <span aria-hidden>✉</span>
                 {CONTACT_EMAIL}
               </a>
-              <a
-                href="https://calendly.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="block text-accent-cyan transition-opacity hover:opacity-80"
-              >
-                Book a technical call directly →
-              </a>
             </div>
 
             <div

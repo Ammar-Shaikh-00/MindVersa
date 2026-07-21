@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://mindversa.dev",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://www.mindversa.dev",
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   changefreq: "weekly",

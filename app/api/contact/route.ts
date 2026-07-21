@@ -82,7 +82,7 @@ export async function POST(req: Request) {
         subject: "We received your message — talk soon!",
         html: `
           <p>Hi ${escapeHtml(data.name.split(" ")[0] ?? data.name)},</p>
-          <p>Thanks for reaching out to <b>MindVersa</b>. We've received your message and will reply within 2 business hours.</p>
+          <p>Thanks for reaching out to <b>MindVersa</b>. We've received your message and will reply within 1 business day.</p>
           <p>In the meantime, feel free to <a href="https://calendly.com/">book a 30-min technical discovery call</a>.</p>
           <p>— The MindVersa team</p>
         `,

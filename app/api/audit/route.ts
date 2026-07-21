@@ -61,7 +61,7 @@ export async function POST(req: Request) {
         subject: "Your free MindVersa audit — next steps",
         html: `
           <p>Hi there,</p>
-          <p>Thanks for requesting a free AI audit from <b>MindVersa</b>. We'll reply within 2 business hours with a short questionnaire to scope your project.</p>
+          <p>Thanks for requesting a free AI audit from <b>MindVersa</b>. We'll reply within 1 business day with a short questionnaire to scope your project.</p>
           <p>Talk soon,<br/>MindVersa</p>
         `,
       });

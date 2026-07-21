@@ -113,7 +113,7 @@ export function ContactSection() {
                   style={{ background: "var(--accent-green)" }}
                 />
                 <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>
-                  Reply within 2 hours on business days
+                  Reply within 1 business day
                 </span>
               </div>
               <p className="mt-1.5 pl-4 text-[13px]" style={{ color: "var(--text-secondary)" }}>
@@ -147,7 +147,7 @@ export function ContactSection() {
               <p style={{ color: "var(--text-primary)", fontWeight: 600 }}>What happens next</p>
               <ol className="m-0 list-none space-y-2.5 p-0">
                 {[
-                  "We review your brief within 2 business hours",
+                  "We review your brief within 1 business day",
                   "You get a clear yes/no on AI feasibility",
                   "If it fits, we send a scoped next-step plan",
                 ].map((step, i) => (
@@ -305,7 +305,7 @@ export function ContactSection() {
               )}
               {state === "idle" && "Send Message →"}
               {state === "loading" && "Sending…"}
-              {state === "success" && "Message sent! We'll reply within 2 hours ✓"}
+              {state === "success" && "Message sent! We'll reply within 1 business day ✓"}
               {state === "error" && "Something went wrong — email us directly"}
             </button>
 

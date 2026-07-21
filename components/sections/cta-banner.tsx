@@ -130,7 +130,7 @@ export function CtaBannerSection() {
                 fontWeight: 500,
               }}
             >
-              ✓ Request received. We will reach out within 2 business hours.
+              ✓ Request received. We will reach out within 1 business day.
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="mx-auto mt-8 max-w-[680px]">

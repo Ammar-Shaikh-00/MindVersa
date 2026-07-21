@@ -124,10 +124,23 @@ export function ContactSection() {
             <div className="mt-6 space-y-2.5 text-[15px]">
               <a
                 href={CONTACT_MAILTO}
-                className="inline-flex items-center gap-2 text-accent-cyan transition-opacity hover:opacity-80"
-                style={{ fontWeight: 500 }}
+                className="inline-flex items-center gap-2 transition-opacity hover:opacity-80"
+                style={{ color: "var(--accent-cyan)", fontWeight: 500 }}
               >
-                <span aria-hidden>✉</span>
+                <svg
+                  aria-hidden
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="m3 7 9 6 9-6" />
+                </svg>
                 {CONTACT_EMAIL}
               </a>
             </div>
@@ -170,10 +183,11 @@ export function ContactSection() {
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={s.label}
-                  className="rounded-full px-3.5 py-2 text-[12px] text-accent-cyan transition-all duration-200 hover:opacity-80"
+                  className="rounded-full px-3.5 py-2 text-[12px] transition-all duration-200 hover:opacity-80"
                   style={{
                     background: "var(--bg-elevated)",
                     border: "1px solid rgba(0,229,255,0.35)",
+                    color: "var(--accent-cyan)",
                     fontWeight: 500,
                   }}
                 >

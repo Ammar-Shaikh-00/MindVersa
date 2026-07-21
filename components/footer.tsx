@@ -100,8 +100,8 @@ export function Footer() {
             </p>
             <a
               href={CONTACT_MAILTO}
-              className="mt-5 inline-block text-[15px] font-medium transition-colors duration-150 hover:text-[var(--accent-cyan)]"
-              style={{ color: "var(--text-primary)" }}
+              className="mt-5 inline-block text-[15px] font-medium transition-opacity duration-150 hover:opacity-80"
+              style={{ color: "var(--accent-cyan)" }}
             >
               {CONTACT_EMAIL}
             </a>

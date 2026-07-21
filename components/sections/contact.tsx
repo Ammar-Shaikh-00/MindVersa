@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { ContactSchema, type ContactInput } from "@/lib/validations";
-import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/site";
+import { CONTACT_EMAIL, CONTACT_MAILTO, SOCIAL_LINKS } from "@/lib/site";
 
 type State = "idle" | "loading" | "success" | "error";
 
@@ -124,8 +124,8 @@ export function ContactSection() {
             <div className="mt-6 space-y-2.5 text-[15px]">
               <a
                 href={CONTACT_MAILTO}
-                className="inline-flex items-center gap-2 transition-colors hover:text-accent-cyan"
-                style={{ color: "var(--text-primary)", fontWeight: 500 }}
+                className="inline-flex items-center gap-2 text-accent-cyan transition-opacity hover:opacity-80"
+                style={{ fontWeight: 500 }}
               >
                 <span aria-hidden>✉</span>
                 {CONTACT_EMAIL}
@@ -163,20 +163,21 @@ export function ContactSection() {
               className="mt-auto flex flex-wrap items-center justify-center gap-2.5 border-t pt-6"
               style={{ borderColor: "rgba(255,255,255,0.06)" }}
             >
-              {["LinkedIn", "GitHub", "Upwork"].map((s) => (
+              {SOCIAL_LINKS.map((s) => (
                 <a
-                  key={s}
-                  href="#"
-                  aria-label={s}
-                  className="rounded-full px-3.5 py-2 text-[12px] transition-all duration-200 hover:border-accent-cyan hover:text-accent-cyan"
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={s.label}
+                  className="rounded-full px-3.5 py-2 text-[12px] text-accent-cyan transition-all duration-200 hover:opacity-80"
                   style={{
                     background: "var(--bg-elevated)",
-                    border: "1px solid var(--border-subtle)",
-                    color: "var(--text-secondary)",
+                    border: "1px solid rgba(0,229,255,0.35)",
                     fontWeight: 500,
                   }}
                 >
-                  {s}
+                  {s.label}
                 </a>
               ))}
             </div>

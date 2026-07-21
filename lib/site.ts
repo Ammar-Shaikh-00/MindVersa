@@ -9,3 +9,18 @@ export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? `https://${BRAND_DOMAIN}`;
+
+export const SOCIAL_LINKS = [
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/ammar-shaikh-oo7",
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/Ammar-Shaikh-00",
+  },
+  {
+    label: "Upwork",
+    href: "https://www.upwork.com/",
+  },
+] as const;

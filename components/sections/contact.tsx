@@ -183,12 +183,13 @@ export function ContactSection() {
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={s.label}
-                  className="rounded-full px-3.5 py-2 text-[12px] transition-all duration-200 hover:opacity-80"
+                  className="rounded-full px-3.5 py-2 text-[12px] underline-offset-2 transition-all duration-200 hover:opacity-80 hover:underline"
                   style={{
-                    background: "var(--bg-elevated)",
-                    border: "1px solid rgba(0,229,255,0.35)",
-                    color: "var(--accent-cyan)",
-                    fontWeight: 500,
+                    background: "rgba(0,229,255,0.08)",
+                    border: "1px solid rgba(0,229,255,0.45)",
+                    color: "#00E5FF",
+                    fontWeight: 600,
+                    cursor: "pointer",
                   }}
                 >
                   {s.label}

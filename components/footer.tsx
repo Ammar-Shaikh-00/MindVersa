@@ -30,19 +30,10 @@ const COL_LEGAL = [
 function FooterColumn({
   title,
   items,
-  linkStyle = "muted",
 }: {
   title: string;
   items: { href: string; label: string; external?: boolean }[];
-  linkStyle?: "muted" | "accent";
 }) {
-  const color =
-    linkStyle === "accent" ? "var(--accent-cyan)" : "var(--text-secondary)";
-  const hoverClass =
-    linkStyle === "accent"
-      ? "hover:opacity-80"
-      : "hover:text-[var(--text-primary)]";
-
   return (
     <div>
       <p
@@ -59,8 +50,8 @@ function FooterColumn({
                 href={item.href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className={`text-[15px] leading-snug transition-all duration-150 ${hoverClass}`}
-                style={{ color }}
+                className="text-[15px] leading-snug transition-colors duration-150 hover:text-[var(--text-primary)]"
+                style={{ color: "var(--text-secondary)" }}
               >
                 {item.label}
               </a>
@@ -113,7 +104,7 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4 sm:gap-x-6 lg:gap-x-10">
             <FooterColumn title="Company" items={COL_COMPANY} />
             <FooterColumn title="Services" items={COL_SERVICES} />
-            <FooterColumn title="Connect" items={COL_CONNECT} linkStyle="accent" />
+            <FooterColumn title="Connect" items={COL_CONNECT} />
             <FooterColumn title="Legal" items={COL_LEGAL} />
           </div>
         </div>

@@ -21,6 +21,6 @@ export const SOCIAL_LINKS = [
   },
   {
     label: "Upwork",
-    href: "https://www.upwork.com/",
+    href: "https://www.upwork.com/freelancers/~017a527bf077a1a1bb",
   },
 ] as const;
